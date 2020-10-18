@@ -14,12 +14,12 @@ var createNotesModule = (function () {
   }
   return {
     getTmpl: function() {
-      return `<section class="create-note">
-          <form id="createForm" name="createForm">
+      return `<section class="create-note display-flex">
+          <form id="createForm" name="createForm" class="display-flex">
             ${inputModule.getTmpl(titleData)}
             ${inputModule.getTmpl(contentData)}
-            <div class="div-control">
-              <div class="div-control--button center-content">
+            <div class="div-control display-flex-center">
+              <div class="div-control--button">
                 <ul>
                   <li><a onClick="createNotesModule.createNote()">Crear</a></li>
                   <li><a onClick="createNotesModule.cancel()">Cancelar</a></li>
@@ -132,13 +132,13 @@ var editNotesModule = (function () {
       }
       titleData.value = elem.title;
       contentData.value = elem.content;
-      return `<section class="create-note">
-          <form id="editForm" name="editForm" onsubmit="editNotesModule.editNote(editForm)">
+      return `<section class="create-note display-flex-grow">
+          <form id="editForm" name="editForm" class="display-flex-grow" onsubmit="editNotesModule.editNote(editForm)">
           ${inputModule.getTmpl(titleData)}
           ${inputModule.getTmpl(contentData)}
 
-            <div class="div-control">
-              <div class="div-control--button center-content">
+            <div class="div-control display-flex-center">
+              <div class="div-control--button display-flex">
                 <ul>
                   <li><a onClick="editNotesModule.editNote()">Editar</a></li>
                   <li><a onClick="editNotesModule.cancel()">Cancelar</a></li>
@@ -320,7 +320,7 @@ var inputModule = (function () {
     getTmpl: function(data) {
       const content = data.textarea ? `<div contenteditable="true" class="div-editable" id="${data.id}" name="${data.id}">${data.value ? data.value : ''}</div>`
                                     : `<input class="div-control--input--input" id="${data.id}" name="${data.id}" placeholder="${data.placeholder ? data.placeholder : ''}" ${data.required ? 'required' : ''} value="${data.value ? data.value : ''}"></input>`;
-      return `<div class="div-control">
+      return `<div class="div-control display-flex">
       <label>${data.title}</label>
         <div class="div-control--input">
           ${content}
