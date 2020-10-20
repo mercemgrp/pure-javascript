@@ -12,12 +12,14 @@ var createNotesModule = (function () {
     required: true,
     textarea: true
   }
+  var titleComp = inputComponent(titleData);
+  var contentComp = inputComponent(contentData);
   return {
     getTmpl: function() {
       return `<section class="create-note display-flex">
           <form id="createForm" name="createForm" class="display-flex">
-            ${inputModule.getTmpl(titleData)}
-            ${inputModule.getTmpl(contentData)}
+            ${titleComp.getTmpl()}
+            ${contentComp.getTmpl()}
             <div class="div-control display-flex-center">
               <div class="div-control--button">
                 <ul>
@@ -30,13 +32,13 @@ var createNotesModule = (function () {
     },
     createNote: function(e) {
       try {
-        let errorTitle = inputModule.checkError(titleData);
-        let errorContent = inputModule.checkError(contentData);
+        let errorTitle = titleComp.checkError();
+        let errorContent = contentComp.checkError();
           if (errorTitle || errorContent) {
             return;
           }
-        const title = inputModule.getValue(titleData);
-        const content = inputModule.getValue(contentData);
+        const title = titleComp.getValue();
+        const content = contentComp.getValue();
           let data = {
               title,
               content
@@ -119,9 +121,12 @@ var editNotesModule = (function () {
     required: true,
     textarea: true
   }
+  var titleComp = inputComponent(titleData);
+  var contentComp = inputComponent(contentData);
+
   var reset = function() {
-    inputModule.reset(titleData);
-    inputModule.reset(contentData);
+    titleComp.reset();
+    contentComp.reset();
   }
   return {
     getTmpl: function(params) {
@@ -134,8 +139,8 @@ var editNotesModule = (function () {
       contentData.value = elem.content;
       return `<section class="create-note display-flex-grow">
           <form id="editForm" name="editForm" class="display-flex-grow" onsubmit="editNotesModule.editNote(editForm)">
-          ${inputModule.getTmpl(titleData)}
-          ${inputModule.getTmpl(contentData)}
+          ${titleComp.getTmpl()}
+          ${contentComp.getTmpl()}
 
             <div class="div-control display-flex-center">
               <div class="div-control--button display-flex">
@@ -152,13 +157,13 @@ var editNotesModule = (function () {
     editNote: function() {
       try {
         reset();
-        let errorTitle = inputModule.checkError(titleData);
-        let errorContent = inputModule.checkError(contentData);
+        let errorTitle = titleComp.checkError();
+        let errorContent = contentComp.checkError();
           if (errorTitle || errorContent) {
             return;
           }
-        const title = inputModule.getValue(titleData);
-        const content = inputModule.getValue(contentData);
+        const title = titleComp.getValue();
+        const content = contentComp.getValue();
         if (!title || !content) {
           return;
         }
@@ -315,9 +320,14 @@ var modalModule = (function () {
   };
 }());
 
-var inputModule = (function () {
+
+function inputComponent(dataIn) {
+  var data = dataIn;
   return {
-    getTmpl: function(data) {
+    setData: function(param) {
+      data = param;
+    },
+    getTmpl: function() {
       const content = data.textarea ? `<div contenteditable="true" class="div-editable" id="${data.id}" name="${data.id}">${data.value ? data.value : ''}</div>`
                                     : `<input class="div-control--input--input" id="${data.id}" name="${data.id}" placeholder="${data.placeholder ? data.placeholder : ''}" ${data.required ? 'required' : ''} value="${data.value ? data.value : ''}"></input>`;
       return `<div class="div-control display-flex">
@@ -360,5 +370,6 @@ var inputModule = (function () {
         titleBorderClasses.remove('div-control--error');
       }
     }
-  };
-}());
+  }
+}
+

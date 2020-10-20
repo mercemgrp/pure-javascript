@@ -18,5 +18,8 @@
     "clean-css-cli": "^4.3.0",
     "node-sass": "^4.14.1",
     "nodemon": "^2.0.5"
+  },
+  "dependencies": {
+    "vanillajs": "^1.0.1"
   }
 }
