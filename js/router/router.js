@@ -48,14 +48,24 @@ class Router {
       if (template) {
         try {
           const templateRendered = template.func(params);
-          appModule.render(templateRendered, document.querySelector("#content"));
-          window.history.pushState({}, "", '/#' + page);
+          if (typeof templateRendered === 'object') {
+            templateRendered.then(
+              resp => {
+                appModule.render(resp, document.querySelector("#content"));
+                window.history.pushState({}, "", '/#' + page);    
+              }
+            )
+          } else {
+            appModule.render(templateRendered, document.querySelector("#content"));
+            window.history.pushState({}, "", '/#' + page);
+          }
+
         } catch(error) {
-          appModule.render(errorModule.getTmpl, document.querySelector('#content'));
+          appModule.render(pages.error.getTmpl, document.querySelector('#content'));
           window.history.pushState({}, "", '/#/error');  
         }
       } else {
-        appModule.render(errorModule.getTmpl, document.querySelector('#content'));
+        appModule.render(pages.error.getTmpl, document.querySelector('#content'));
           window.history.pushState({}, "", '/#/error');  
           window.history.pushState({}, "", '/#');
       }

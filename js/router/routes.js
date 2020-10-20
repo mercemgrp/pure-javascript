@@ -1,14 +1,14 @@
 const PATHS = {
     '/list':  {
-        func:  listNotesModule.getTmpl, 
+        func:  pages.listNotes.getTmpl, 
     },
     '/list/{{id}}': {
-        func:  viewNotesModule.getTmpl
+        func:  pages.viewNotes.getTmpl
     },
     '/edit/{{id}}': {
-        func: editNotesModule.getTmpl
+        func: pages.editNotes.getTmpl
     },
     '/create': {
-        func: createNotesModule.getTmpl
+        func: pages.createNotes.getTmpl
     }
 }

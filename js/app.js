@@ -26,3 +26,5 @@ var appModule = (function () {
 window.onresize = function() {
     appModule.resize();
 }
+
+  
