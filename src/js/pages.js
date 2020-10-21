@@ -305,10 +305,10 @@ var pages = (function() {
       }
     }());
     return {
-      createNotes: createNotes,
-      viewNotes: viewNotes,
-      editNotes: editNotes,
-      listNotes: listNotes,
+      createNotes,
+      viewNotes,
+      editNotes,
+      listNotes,
       error: error
     }
   })();
