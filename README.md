@@ -7,13 +7,16 @@ Pure js project with Node.js. Testing:
 npm install
 npm run start
 
+1) Tener arrancado el servidor de notas
+npm install
+npm run start
+
 pure-javascript
 ├── README.md
 ├── node_modules
 ├── package.json
 ├── .gitignore
-├── public
-│   ├── favicon.ico
+├── favicon.ico
 ├── src
 │   ├── index.css
 │   ├── index.js

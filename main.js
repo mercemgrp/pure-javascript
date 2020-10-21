@@ -1,12 +1,11 @@
-
 const JSFiles = [
     'src/js/app.js',
+    'src/js/functions.js',
     'src/js/components.js',
     'src/js/pages.js',
     'src/js/services.js',
     'src/js/router/routes.js',
-    'src/js/router/router.js',
-    'src/js/router/index.js'
+    'src/js/router/router.js'
 ];
 const CSSFiles = [
     'src/stylesheets/css/generic.css',
@@ -34,6 +33,7 @@ const LoadFiles = function() {
             JSFiles.forEach(file => loadJS(file));    
         }
         
+        
     };
     return {
         load
@@ -41,3 +41,4 @@ const LoadFiles = function() {
 }();
 
 LoadFiles.load(JSFiles, CSSFiles);
+

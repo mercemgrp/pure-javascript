@@ -1,5 +1,5 @@
 var components = (function() {
-    var modalC = (function () {
+    var modal = (function () {
       return {
         open: function(data)  {
           if (document.getElementsByClassName('.modal').length === 0) {
@@ -49,12 +49,8 @@ var components = (function() {
         }
       };
     }());
-    var inputComp = function inputC(dataIn) {
-      var data = dataIn;
+    var input = (function (data) {
       return {
-        setData: function(param) {
-          data = param;
-        },
         getTmpl: function() {
           const content = data.textarea ? `<div contenteditable="true" class="div-editable" id="${data.id}" name="${data.id}">${data.value ? data.value : ''}</div>`
                                         : `<input class="div-control--input--input" id="${data.id}" name="${data.id}" placeholder="${data.placeholder ? data.placeholder : ''}" ${data.required ? 'required' : ''} value="${data.value ? data.value : ''}"></input>`;
@@ -99,9 +95,9 @@ var components = (function() {
           }
         }
       }
-    }
+    });
     return {
-      modal: modalC,
-      input: inputComp
+      modal,
+      input
     }
   })();
