@@ -72,32 +72,30 @@ var pages = (function() {
     var viewNotes = (function () {
       return {
         getTmpl: function(params) {
-          let notes = myNotes.getNotes();
-              const elem = notes.find(elem => +elem.id === +params['id']);
-              if(!elem) {
-                throw new Error('error');
-              }
-                return `<section class="nota" id="nota_${elem.id}">
-                <div class="nota-titulo">
-                    <div class="nota-titulo-text">${elem.title}</div>
-                    <ul class="nota-titulo-menu">
-                        <li>
-                        <a onClick="ROUTER.load('/edit/${elem.id}')">
-                            <i class="im im-pencil"></i>
-                        </a>
-                        </li>
-                        <li>
-                        <a href="javascript:void(0)" onclick="pages.viewNotes.deleteNote(${elem.id})">
-                            <i class="im im-trash-can"></i>
-                        </a>
-                        </li>
-                    </ul>
-                    </div>
-                    <div class="nota-fecha">${elem.date}</div>
-                    <div class="nota-content">
-                        ${elem.content}
-                    </div>
-                </section>`;
+          return myNotes.getNote(params.id)
+            .then(elem => {
+              return `<section class="nota" id="nota_${elem.id}">
+              <div class="nota-titulo">
+                  <div class="nota-titulo-text">${elem.title}</div>
+                  <ul class="nota-titulo-menu">
+                      <li>
+                      <a onClick="ROUTER.load('/edit/${elem.id}')">
+                          <i class="im im-pencil"></i>
+                      </a>
+                      </li>
+                      <li>
+                      <a href="javascript:void(0)" onclick="pages.viewNotes.deleteNote(${elem.id})">
+                          <i class="im im-trash-can"></i>
+                      </a>
+                      </li>
+                  </ul>
+                  </div>
+                  <div class="nota-fecha">${elem.date}</div>
+                  <div class="nota-content">
+                      ${elem.content}
+                  </div>
+              </section>`;
+          });
         },
         deleteNote: function(id) {
           try {
@@ -253,6 +251,9 @@ var pages = (function() {
       return {
         getTmpl: function() {
           return myNotes.getNotes().then(resp => {
+            if (resp && resp.error) {
+              return `<div>${resp.error}</div>`;
+            }
             let notes = resp;
             return  notes.reduce((total, currentValue) => total += noteSectionTmpl(currentValue), '');
           })

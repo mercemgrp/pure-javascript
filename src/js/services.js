@@ -60,7 +60,12 @@ var myNotes = (function () {
       getNote: function(id) {
         return serviceCalls.get(`${ENV.api}/notes/${id}`)
           .then(response => response)
-          .catch(err => console.log('error :: ', err))
+          .catch(err => {
+            console.log('error :: ', err);
+            return {
+              error: 'Error cargando la nota'
+            }
+          })
       },
         getNotes: function() {
           return serviceCalls.get(`${ENV.api}/notes`)
@@ -68,7 +73,12 @@ var myNotes = (function () {
               notes = response.data;
               return response.data;
             })
-            .catch(err => console.log('error :: ', err))
+            .catch(err => {
+              console.log('error :: ', err);
+              return {
+                error: 'Error cargando las notas'
+              }
+            })
         },
         deleteNote: function(id) {
             return serviceCalls.delete(`${ENV.api}/notes/${id}`)
@@ -76,7 +86,12 @@ var myNotes = (function () {
               notes = response.data;
               return response.data;
             })
-            .catch(err => console.log('error :: ', err))
+            .catch(err => {
+              console.log('error :: ', err);
+              return {
+                error: 'Error eliminando la nota'
+              }
+            })
 
         },
         editNote: function(data) {
@@ -85,7 +100,12 @@ var myNotes = (function () {
               notes = response.data;
               return response.data;
             })
-            .catch(err => console.log('error :: ', err))
+            .catch(err => {
+              console.log('error :: ', err);
+              return {
+                error: 'Error editando la nota'
+              }
+            })
             
         },
         createNote: function(data) {
@@ -94,7 +114,12 @@ var myNotes = (function () {
               notes = response.data;
               return response.data;
             })
-            .catch(err => console.log('error :: ', err))
+            .catch(err => {
+              console.log('error :: ', err);
+              return {
+                error: 'Error creando la nota'
+              }
+            })
         }
     }       
 }());

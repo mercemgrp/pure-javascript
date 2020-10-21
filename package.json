@@ -2,20 +2,21 @@
   "name": "pure-javascript",
   "version": "1.0.0",
   "description": "Routing and styles\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D, modules and style",
-  "main": "app.js",
+  "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "ng": "ng",
     "start": "npm run process-styles && live-server --port=3000 --entry-file='./index.html'",
-    "watch-scss": "node-sass --watch ./stylesheets/scss --output ./stylesheets/css",
-    "compile-styles": "node-sass --output-style expanded --source-map true --source-map-contents true --precision 6 stylesheets/scss/styles.scss stylesheets/css/styles.css",
-    "css-minify": "cleancss --level 1 --format breaksWith=lf --source-map --source-map-inline-sources --output stylesheets/css/styles.min.css stylesheets/css/styles.css",
+    "watch-scss": "node-sass --watch ./src/stylesheets/scss --output ./src/stylesheets/css",
+    "compile-styles": "node-sass --output-style expanded --source-map true --source-map-contents true --precision 6 src/stylesheets/scss/styles.scss src/stylesheets/css/styles.css",
+    "css-minify": "cleancss --level 1 --format breaksWith=lf --source-map --source-map-inline-sources --output src/stylesheets/css/styles.min.css src/stylesheets/css/styles.css",
     "process-styles": "npm run compile-styles && npm run css-minify"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "clean-css-cli": "^4.3.0",
+    "css-loader": "^5.0.0",
     "node-sass": "^4.14.1",
     "nodemon": "^2.0.5"
   },
