@@ -69,10 +69,7 @@ var pages = (function() {
         var getTmpl = (function(params){
             form = components.noteForm();
             return myNotes.getNote(params.id)
-              .then(elem => {
-                debugger;
-                return form.getTmpl(elem);
-              })
+              .then(elem => form.getTmpl(elem))
               .catch((e) => {
                 console.error('editNotes :: error :: ', e);
                 components.modal.open({
