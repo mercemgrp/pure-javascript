@@ -1,59 +1,16 @@
 var pages = (function() {
-    var createNotes = (function () {
-      var titleData = {
-        id: 'note_title',
-        title: 'Título',
-        required: true
-      };
-      var contentData = {
-        id: 'note_content',
-        title: 'Contenido',
-        required: true,
-        textarea: true
-      }
-      var titleComp = components.input(titleData);
-      var contentComp = components.input(contentData);
-      return {
-        getTmpl: function() {
-          return `<section class="create-note display-flex">
-              <form id="createForm" name="createForm" class="display-flex">
-                ${titleComp.getTmpl()}
-                ${contentComp.getTmpl()}
-                <div class="div-control display-flex-center">
-                  <div class="div-control--button">
-                    <ul>
-                      <li><a onClick="pages.createNotes.createNote()">Crear</a></li>
-                      <li><a onClick="pages.createNotes.cancel()">Cancelar</a></li>
-                    </ul>
-                  </div>
-              </form>
-            </section>`;
-        },
-        createNote: function(e) {
-          try {
-            let errorTitle = titleComp.checkError();
-            let errorContent = contentComp.checkError();
-              if (errorTitle || errorContent) {
-                return;
-              }
-            const title = titleComp.getValue();
-            const content = contentComp.getValue();
-              let data = {
-                  title,
-                  content
-              };
-              myNotes.createNote(data)
-              .then(() => ROUTER.load('/list'))
-              .catch(() => {
-                components.modal.open({
-                  title: '¡Atención!',
-                  content: 'Ha ocurrido un error editando la nota',
-                  accept: ROUTER.load,
-                  paramAccept: '/list',
-                  cancel: false
-                });
-              });
-          } catch(err) {
+  var createNotes = (function () {
+    var create = function() {
+      var form;
+      var createNote = function() {
+        var myNote = form.onSubmit();
+        if (!myNote) {
+          return;
+        }
+        myNotes.createNote(myNote)
+          .then(() => ROUTER.load('/list'))
+          .catch((e) => {
+            console.error('createNote :: error :: ', e);
             components.modal.open({
               title: '¡Atención!',
               content: 'Ha ocurrido un error creando la nota',
@@ -61,137 +18,44 @@ var pages = (function() {
               paramAccept: '/list',
               cancel: false
             });
-          }
-        },
-        cancel: function() {
-          ROUTER.load('/list');
-        }
-      }
-    }());
-    
-    var viewNotes = (function () {
+          });
+      };
+      var getTmpl = function() {
+          form = components.noteForm();
+          return form.getTmpl({}); 
+      };
       return {
-        getTmpl: function(params) {
-          return myNotes.getNote(params.id)
-            .then(elem => {
-              return `<section class="nota" id="nota_${elem.id}">
-              <div class="nota-titulo">
-                  <div class="nota-titulo-text">${elem.title}</div>
-                  <ul class="nota-titulo-menu">
-                      <li>
-                      <a onClick="ROUTER.load('/edit/${elem.id}')">
-                          <i class="im im-pencil"></i>
-                      </a>
-                      </li>
-                      <li>
-                      <a href="javascript:void(0)" onclick="pages.viewNotes.deleteNote(${elem.id})">
-                          <i class="im im-trash-can"></i>
-                      </a>
-                      </li>
-                  </ul>
-                  </div>
-                  <div class="nota-fecha">${elem.date}</div>
-                  <div class="nota-content">
-                      ${elem.content}
-                  </div>
-              </section>`;
-          });
-        },
-        deleteNote: function(id) {
-          try {
-            myNotes.deleteNote(id)
-              .then(
-                () => ROUTER.load('/list')
-              )
-              .catch(() => {
-                components.modal.open({
-                  title: '¡Atención!',
-                  content: 'Ha ocurrido un error editando la nota',
-                  accept: ROUTER.load,
-                  paramAccept: '/list',
-                  cancel: false
-                });
-            }
-
-            );
-        } catch(err) {
-          components.modal.open({
-            title: '¡Atención!',
-            content: 'Ha ocurrido un error editando la nota',
-            accept: ROUTER.load,
-            paramAccept: '/list',
-            cancel: false
-          });
-        }
-        }
+        getTmpl: getTmpl,
+        load: function() {
+          document.querySelector('.header-menu--create').classList.add('no-display');
+          form.load();
+          document.querySelector('.note-form-create .note-form-section--button-accept a')
+            .addEventListener('click', e => {
+              e.preventDefault();
+              createNote();
+            });
+        }  
       }
-    }());
+    };
+    var instance = create();
+    return {
+      getTmpl: instance.getTmpl,
+      load: instance.load
+    }
+  }());  
     
     var editNotes = (function () {
-      var titleData = {
-        id: 'note_title',
-        title: 'Título',
-        required: true,
-      };
-      var contentData = {
-        id: 'note_content',
-        title: 'Contenido',
-        required: true,
-        textarea: true
-      }
-      var titleComp = components.input(titleData);
-      var contentComp = components.input(contentData);
-    
-      var reset = function() {
-        titleComp.reset();
-        contentComp.reset();
-      }
-      return {
-        getTmpl: function(params) {
-          return myNotes.getNote(params.id)
-            .then(elem => {
-              titleData.value = elem.title;
-              contentData.value = elem.content;
-              return `<section class="create-note display-flex-grow">
-                <form id="editForm" name="editForm" class="display-flex-grow" onsubmit="pages.editNotes.editNote(editForm)">
-                ${titleComp.getTmpl()}
-                ${contentComp.getTmpl()}
-                  <div class="div-control display-flex-center">
-                    <div class="div-control--button display-flex">
-                      <ul>
-                        <li><a onClick="pages.editNotes.editNote()">Editar</a></li>
-                        <li><a onClick="pages.editNotes.cancel()">Cancelar</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </form>
-                <input class="hidden" id="note_id" value="${elem.id}"/>
-              </section>`;
-            })
-            .catch(err => console.log('error :: ', err));  
-        },
-        editNote: function() {
-          try {
-            reset();
-            let errorTitle = titleComp.checkError();
-            let errorContent = contentComp.checkError();
-              if (errorTitle || errorContent) {
-                return;
-              }
-            const title = titleComp.getValue();
-            const content = contentComp.getValue();
-            if (!title || !content) {
-              return;
-            }
-            const id = +document.querySelector('#note_id').value;
-            const obj = {
-                id,
-                title,
-                content
-            };
-            myNotes.editNote(obj)
+      var edit = (function () {
+        var form;
+        var editNote = (function() {
+          var myNote = form.onSubmit();
+          if (!myNote) {
+            return;
+          }
+          myNotes.editNote(myNote)
             .then(() => ROUTER.load('/list'))
             .catch(() => {
+              console.error('editNote :: error :: ', e);
               components.modal.open({
                 title: '¡Atención!',
                 content: 'Ha ocurrido un error editando la nota',
@@ -199,45 +63,65 @@ var pages = (function() {
                 paramAccept: '/list',
                 cancel: false
               });
+              return false;
             })
-            
-          } catch(err) {
-            components.modal.open({
-              title: '¡Atención!',
-              content: 'Ha ocurrido un error editando la nota',
-              accept: ROUTER.load,
-              paramAccept: '/list',
-              cancel: false
+        });
+        var getTmpl = (function(params){
+            form = components.noteForm();
+            return myNotes.getNote(params.id)
+              .then(elem => {
+                debugger;
+                return form.getTmpl(elem);
+              })
+              .catch((e) => {
+                console.error('editNotes :: error :: ', e);
+                components.modal.open({
+                  title: '¡Atención!',
+                  content: 'Ha ocurrido un error abriendo  la página',
+                  accept: ROUTER.load,
+                  paramAccept: '/list',
+                  cancel: false
+                });
+                return false;
+              });  
+        });
+        var load = function() {
+          form.load();
+          listener = document.querySelector('.note-form-edit .note-form-section--button-accept a')
+            .addEventListener('click', function (event) {
+              event.preventDefault();
+              editNote();
             });
-          }
-        },
-        cancel: function() {
-          ROUTER.load('/list');
         }
+        return {
+          getTmpl,
+          load,
+          editNote  
+        }
+      });
+      var instance = edit();
+      return {
+        getTmpl: instance.getTmpl,
+        load: instance.load
       }
     }());
     
     var listNotes = (function () {
       var noteSectionTmpl = function(elem) {
-       return `<section class="note-section note-section-hide-content" id="note_${elem.id}">
+       return `<section onClick="pages.listNotes.toggle(event, ${elem.id})" class="note-section note-section-hide-content ${elem.style ?  elem.style : 'classic'}" id="note_${elem.id}">
           <div class ="note-section-header">
             <div class="note-section-header--title">
-              <a onClick="pages.listNotes.toggle(${elem.id})">${elem.title} </a>
+              <a>${elem.title} </a>
             </div>
             <div class="note-section-header--additional">
               <ul class="note-section-header--menu">
                 <li>
-                  <a onClick="pages.listNotes.toggle(${elem.id})">
-                      <i class="im im-eye"></i>
-                  </a>
-                </li>
-                <li>
-                  <a onClick="ROUTER.load('/edit/${elem.id}')">
+                  <a onClick="event.stopPropagation();ROUTER.load('/edit/${elem.id}')">
                       <i class="im im-pencil"></i>
                   </a>
                 </li>
                 <li>
-                  <a href="javascript:void(0)" onclick="pages.listNotes.deleteNote(${elem.id})">
+                  <a href="javascript:void(0)" onclick="event.stopPropagation();pages.listNotes.deleteNote(${elem.id})">
                       <i class="im im-trash-can"></i>
                   </a>
                 </li>
@@ -250,14 +134,13 @@ var pages = (function() {
       }
       return {
         getTmpl: function() {
-          return myNotes.getNotes().then(resp => {
-            if (resp && resp.error) {
-              return `<div>${resp.error}</div>`;
-            }
-            let notes = resp;
-            return  notes.reduce((total, currentValue) => total += noteSectionTmpl(currentValue), '');
-          })
-          .catch(err => console.log('error :: ', err));  ;   
+          return myNotes.getNotes()
+            .then(resp => 
+              `<div class="note-list">
+                ${resp.reduce((total, currentValue) => total += noteSectionTmpl(currentValue), '')}
+                </div>`
+              )
+            .catch(() => error.getTmpl())  
         },
         deleteNote: function(id) {
           components.modal.open({
@@ -287,7 +170,10 @@ var pages = (function() {
             });
           }
         },
-        toggle: function(id) {
+        toggle: function(event, id) {
+          if (event) {
+            event.preventDefault();
+          }
           let element = document.querySelector(`#note_${id}`);
           if (element.classList.contains('note-section-hide-content')) {
             element.classList.remove('note-section-hide-content');
@@ -306,7 +192,6 @@ var pages = (function() {
     }());
     return {
       createNotes,
-      viewNotes,
       editNotes,
       listNotes,
       error: error

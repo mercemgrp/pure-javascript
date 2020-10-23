@@ -10,7 +10,11 @@ var serviceCalls = (function() {
       credentials: 'omit'
     });
     const resp = await response.json();
-    return resp;
+    if (resp.error) {
+      throw('error');
+    } else {
+      return resp;
+    }
   };
   var put = async function putData(url = '', data = {}) {
     var myHeaders = new Headers({
@@ -23,7 +27,11 @@ var serviceCalls = (function() {
       body: JSON.stringify(data)
     });
     const resp = await response.json();
-    return resp;
+    if (resp.error) {
+      throw('error');
+    } else {
+      return resp;
+    }
   };
   var post = async function postData(url = '', data = {}) {
       var myHeaders = new Headers({});
@@ -34,7 +42,11 @@ var serviceCalls = (function() {
         body: JSON.stringify(data) // body data type must match "Content-Type" header
       });
       const resp = await response.json(); // parses JSON response into native JavaScript objects
-      return resp;
+      if (resp.error) {
+        throw('error');
+      } else {
+        return resp;
+      }
     };
   var get = async function getData(url = '') {
     var myHeaders = new Headers();
@@ -44,7 +56,11 @@ var serviceCalls = (function() {
       credentials: 'omit'
     });
     const resp = await response.json();
-    return resp;
+    if (resp.error) {
+      throw('error');
+    } else {
+      return resp;
+    }
   };
   
   return {
@@ -58,68 +74,66 @@ var myNotes = (function () {
     var notes;
     return {
       getNote: function(id) {
+        components.loader.open();
         return serviceCalls.get(`${ENV.api}/notes/${id}`)
           .then(response => response)
           .catch(err => {
-            console.log('error :: ', err);
-            return {
-              error: 'Error cargando la nota'
-            }
+            components.loader.close();
+            throw(err)
           })
       },
-        getNotes: function() {
-          return serviceCalls.get(`${ENV.api}/notes`)
-            .then(response => {
+      getNotes: function() {
+        components.loader.open();
+        return serviceCalls.get(`${ENV.api}/notes`)
+          .then(response => {
+            components.loader.close();
               notes = response.data;
               return response.data;
-            })
-            .catch(err => {
-              console.log('error :: ', err);
-              return {
-                error: 'Error cargando las notas'
-              }
-            })
-        },
-        deleteNote: function(id) {
-            return serviceCalls.delete(`${ENV.api}/notes/${id}`)
-            .then(response => {
-              notes = response.data;
-              return response.data;
-            })
-            .catch(err => {
-              console.log('error :: ', err);
-              return {
-                error: 'Error eliminando la nota'
-              }
-            })
-
-        },
-        editNote: function(data) {
-            return serviceCalls.post(`${ENV.api}/notes/${data.id}`, data)
-            .then(response => {
-              notes = response.data;
-              return response.data;
-            })
-            .catch(err => {
-              console.log('error :: ', err);
-              return {
-                error: 'Error editando la nota'
-              }
-            })
-            
-        },
-        createNote: function(data) {
-            return serviceCalls.put(`${ENV.api}/notes`, data)
-            .then(response => {
-              notes = response.data;
-              return response.data;
-            })
-            .catch(err => {
-              console.log('error :: ', err);
-              return {
-                error: 'Error creando la nota'
-              }
-            })
-        }
+          })
+          .catch(err => {
+            components.loader.close();
+            throw(err)
+          })
+      },
+      deleteNote: function(id) {
+        components.loader.open();
+          return serviceCalls.delete(`${ENV.api}/notes/${id}`)
+          .then(response => {
+            components.loader.close();
+            notes = response.data;
+            return response.data;
+          })
+          .catch(err => {
+            components.loader.close();
+            throw(err)
+          })
+      },
+      editNote: function(data) {
+        components.loader.open();
+          return serviceCalls.post(`${ENV.api}/notes/${data.id}`, data)
+          .then(response => {
+            components.loader.close();
+            notes = response.data;
+            return response.data;
+          })
+          .catch(err => {
+            components.loader.close();
+            throw(err)
+          })
+          
+      },
+      createNote: function(data) {
+        components.loader.open();
+          return serviceCalls.put(`${ENV.api}/notes`, data)
+          .then(response => {
+            components.loader.close();
+            notes = response.data;
+            return response.data;
+          })
+          .catch(err => {
+            components.loader.close();
+            throw(err)
+          })
+      }
     }       
 }());

@@ -1,6 +1,6 @@
 const JSFiles = [
-    'src/js/app.js',
     'src/js/functions.js',
+    'src/js/app.js',
     'src/js/components.js',
     'src/js/pages.js',
     'src/js/services.js',
@@ -12,10 +12,17 @@ const CSSFiles = [
     'src/stylesheets/css/styles.css'
 ];
 const LoadFiles = function() {
-    var loadJS = function(file) {
+    var loadJSSinc = function(JSFiles, i) {
+        if (JSFiles.length <= i) {
+            return;
+        }
         var jsElm = document.createElement("script");
+        jsElm.addEventListener("load", () => {
+            console.log("Script terminó de cargarse y ejecutarse, ", JSFiles[i]);
+            loadJSSinc(JSFiles, ++i);
+          });
         jsElm.type = "application/javascript";
-        jsElm.src = file;
+        jsElm.src = JSFiles[i];
         document.body.appendChild(jsElm);
     };
     var loadCSS = function(file) {
@@ -30,7 +37,7 @@ const LoadFiles = function() {
             CSSFiles.forEach(file => loadCSS(file));    
         }
         if(JSFiles) {
-            JSFiles.forEach(file => loadJS(file));    
+            loadJSSinc(JSFiles, 0);
         }
         
         

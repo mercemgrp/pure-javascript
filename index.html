@@ -14,16 +14,18 @@
 <body>
   <div class="main-container">
     <header class="header">
-      <a class="header-title" onClick="ROUTER.load('/list')">Notas</a>
+      <a class="header-title" onClick="ROUTER.load('/list')">Mis notas</a>
       <ul class="header-menu">
-        <li><a onClick="ROUTER.load('/create')">
-          <i class="im im-plus"></i>
-        </a></li>
-        <li class="im im-data"></li>
+        <li class="header-menu--create">
+          <a onClick="ROUTER.load('/create')">
+            <i class="im im-plus"></i>
+          </a>
+        </li>
       </ul>
     </header>
     <div id="content"></div>
-    <footer class="footer">2020</footer>
+    <div id="shared-content"></div>
+   <!-- <footer class="footer">2020</footer> -->
   </div>
     <script type="module" src="./main.js"></script>
 

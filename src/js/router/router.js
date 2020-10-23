@@ -30,11 +30,17 @@ const ROUTER = (function (paths) {
           templateRendered.then(
             resp => {
               Functions.render(resp, document.querySelector("#content"));
+              if (template.load) {
+                template.load();
+              }
               window.history.pushState({}, "", '/#' + page);    
             }
           )
         } else {
           Functions.render(templateRendered, document.querySelector("#content"));
+          if (template.load) {
+            template.load();
+          }
           window.history.pushState({}, "", '/#' + page);
         }
 
