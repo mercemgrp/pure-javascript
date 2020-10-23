@@ -1,4 +1,3 @@
-debugger;
 const PATHS = {
     '/list':  {
         func:  pages.listNotes.getTmpl 

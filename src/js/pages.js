@@ -11,7 +11,7 @@ var pages = (function() {
           .then(() => ROUTER.load('/list'))
           .catch((e) => {
             console.error('createNote :: error :: ', e);
-            components.modal.open({
+            modal.open({
               title: '¡Atención!',
               content: 'Ha ocurrido un error creando la nota',
               accept: ROUTER.load,
@@ -56,7 +56,7 @@ var pages = (function() {
             .then(() => ROUTER.load('/list'))
             .catch(() => {
               console.error('editNote :: error :: ', e);
-              components.modal.open({
+              modal.open({
                 title: '¡Atención!',
                 content: 'Ha ocurrido un error editando la nota',
                 accept: ROUTER.load,
@@ -70,12 +70,11 @@ var pages = (function() {
             form = components.noteForm();
             return myNotes.getNote(params.id)
               .then(elem => {
-                debugger;
                 return form.getTmpl(elem);
               })
               .catch((e) => {
                 console.error('editNotes :: error :: ', e);
-                components.modal.open({
+                modal.open({
                   title: '¡Atención!',
                   content: 'Ha ocurrido un error abriendo  la página',
                   accept: ROUTER.load,
@@ -143,7 +142,7 @@ var pages = (function() {
             .catch(() => error.getTmpl())  
         },
         deleteNote: function(id) {
-          components.modal.open({
+          modal.open({
             title: '¡Atención!',
             content: '¿Desea borrar la nota seleccionada?',
             accept: this.deleteNoteConfirm,
@@ -155,7 +154,7 @@ var pages = (function() {
             myNotes.deleteNote(id).then(
               response => ROUTER.load('/list'),
               error => {
-                components.modal.open({
+                modal.open({
                   title: '¡Atención!',
                   content: 'Ha ocurrido un error eliminando la nota'
                 });
@@ -164,7 +163,7 @@ var pages = (function() {
             );
             
           } catch(err) {
-            components.modal.open({
+            modal.open({
               title: '¡Atención!',
               content: 'Ha ocurrido un error eliminando la nota'
             });

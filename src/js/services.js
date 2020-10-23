@@ -73,64 +73,67 @@ var myNotes = (function () {
     var notes;
     return {
       getNote: function(id) {
-        components.loader.open();
+        loader.open();
         return serviceCalls.get(`${ENV.api}/notes/${id}`)
-          .then(response => response)
+          .then(response => {
+            loader.close();
+            return response;
+          })
           .catch(err => {
-            components.loader.close();
+            loader.close();
             throw(err)
           })
       },
       getNotes: function() {
-        components.loader.open();
+        loader.open();
         return serviceCalls.get(`${ENV.api}/notes`)
           .then(response => {
-            components.loader.close();
+            loader.close();
               notes = response.data;
               return response.data;
           })
           .catch(err => {
-            components.loader.close();
+            loader.close();
             throw(err)
           })
       },
       deleteNote: function(id) {
-        components.loader.open();
+        loader.open();
           return serviceCalls.delete(`${ENV.api}/notes/${id}`)
           .then(response => {
-            components.loader.close();
+            loader.close();
             notes = response.data;
             return response.data;
           })
           .catch(err => {
-            components.loader.close();
+            loader.close();
             throw(err)
           })
       },
       editNote: function(data) {
-        components.loader.open();
+        loader.open();
           return serviceCalls.post(`${ENV.api}/notes/${data.id}`, data)
           .then(response => {
-            components.loader.close();
+            loader.close();
             notes = response.data;
             return response.data;
           })
           .catch(err => {
-            components.loader.close();
+            loader.close();
             throw(err)
           })
           
       },
       createNote: function(data) {
-        components.loader.open();
+        loader.open();
           return serviceCalls.put(`${ENV.api}/notes`, data)
           .then(response => {
-            components.loader.close();
+            loader.close();
             notes = response.data;
             return response.data;
           })
           .catch(err => {
-            components.loader.close();
+            loader.close();
             throw(err)
           })
       }

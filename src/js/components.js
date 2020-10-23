@@ -1,78 +1,4 @@
 var components = (function() {
-    var modal = (function () {
-      var getTmpl =  function() {
-        return `<div class="modal no-display">
-          <div class="modal-content">
-            <div class="modal-header"><h1></h1></div>
-            <div class="modal-body"><p></p></div>
-            <div class="modal-footer">
-              <ul class="button-list center-content">
-                <li><a class="button-list--accept" onClick="components.modal.accept()">Aceptar</a></li>
-                <li><a class="button-list--cancel" onClick="components.modal.cancel()">Cancelar</a></li>
-              </ul>
-            </div>
-          </div>
-        `
-      };
-      return {
-        open: function(data)  {
-          if (document.getElementsByClassName('.modal').length === 0) {
-            var modalElem = document.createElement('div');
-            modalElem.innerHTML = getTmpl();
-            document.querySelector('#content').appendChild(modalElem);
-          }
-          document.querySelector('.modal-header h1').innerHTML = data.title;
-          document.querySelector('.modal-body p').innerHTML = data.content;
-          if (data.accept) {
-            document.querySelector('.modal .button-list--accept')
-              .addEventListener('click', e => data.accept(data.paramAccept));
-          if (data.cancel === false)
-            document.querySelector('.modal .button-list--cancel').classList.add('no-display');
-          } else {
-            document.querySelector('.modal .button-list--cancel').classList.remove('no-display');
-          }
-          document.querySelector('.modal').classList.add('display');
-          document.querySelector('.modal').classList.remove('no-display');
-          
-        },
-        close: function() {
-          document.querySelector('.modal').classList.remove('display');
-          document.querySelector('.modal').classList.add('no-display');
-        },
-        cancel: function() {
-          this.close();
-        },
-        accept: function() {
-          this.close();
-        }
-      };
-    }());
-    var loader = (function () {
-      var getTmpl =  function() {
-        return `<div class="loader no-display">
-        <div class="loader-content">
-          <i class="im im-note-o"></i>
-          </div>
-        </div>
-        `
-      };
-      return {
-        open: function()  {
-          if (document.getElementsByClassName('.loader').length === 0) {
-            var loaderElem = document.createElement('div');
-            loaderElem.innerHTML = getTmpl();
-            document.querySelector('#content').appendChild(loaderElem);
-          }
-          document.querySelector('.loader').classList.add('display');
-          document.querySelector('.loader').classList.remove('no-display');
-          
-        },
-        close: function() {
-          document.querySelector('.loader').classList.remove('display');
-          document.querySelector('.loader').classList.add('no-display');
-        }
-      };
-    }());
     var input = (function (data) {
       return {
         getTmpl: function() {
@@ -189,7 +115,7 @@ var components = (function() {
           const elem = document.querySelector('#note_content');
           const html = elem.innerHTML;
           document.querySelector('#note_content').innerHTML = '';
-          Functionss.resize();
+          Functions.resize();
           document.querySelector('#note_content').style.height = (elem.offsetHeight - 20) + 'px';
           document.querySelector('#note_content').innerHTML = html;
           document.querySelector('.note-form-section--edit-color--link')
@@ -248,9 +174,80 @@ var components = (function() {
       }
     });
     return {
-      modal,
       input,
-      loader,
       noteForm
     } 
   })();
+
+class ModalComp {
+  constructor() {
+    var modalElem = document.createElement('div');
+      modalElem.innerHTML = this.getTmpl();
+      document.querySelector('#shared-content').appendChild(modalElem);
+  }
+  getTmpl() {
+    return `<div class="modal no-display">
+      <div class="modal-content">
+        <div class="modal-header"><h1></h1></div>
+        <div class="modal-body"><p></p></div>
+        <div class="modal-footer">
+          <ul class="button-list center-content">
+            <li><a class="button-list--accept" onClick="modal.accept()">Aceptar</a></li>
+            <li><a class="button-list--cancel" onClick="modal.cancel()">Cancelar</a></li>
+          </ul>
+        </div>
+      </div>
+    `
+  }
+    open(data)  {
+      document.querySelector('.modal-header h1').innerHTML = data.title;
+      document.querySelector('.modal-body p').innerHTML = data.content;
+      if (data.accept) {
+        document.querySelector('.modal .button-list--accept')
+          .addEventListener('click', e => data.accept(data.paramAccept));
+      }
+      if (data.cancel === false) {
+        document.querySelector('.modal .button-list--cancel').classList.add('no-display');
+      } else {
+        document.querySelector('.modal .button-list--cancel').classList.remove('no-display');
+      }
+      document.querySelector('.modal').classList.add('display');
+      document.querySelector('.modal').classList.remove('no-display');
+      
+    }
+    close() {
+      document.querySelector('.modal').classList.remove('display');
+      document.querySelector('.modal').classList.add('no-display');
+    }
+    cancel() {
+      this.close();
+    }
+    accept() {
+      this.close();
+    }
+}
+class LoaderComp  {
+  constructor() {
+    let loaderElem = document.createElement('div');
+    loaderElem.innerHTML = this.getTmpl();
+    document.querySelector('#shared-content').appendChild(loaderElem);
+  }
+  getTmpl() {
+    return `<div class="loader no-display">
+    <div class="loader-content">
+      <i class="im im-note-o"></i>
+      </div>
+    </div> `
+  }
+  open()  {
+    document.querySelector('.loader').classList.add('display');
+    document.querySelector('.loader').classList.remove('no-display');
+  }
+  close() {
+    document.querySelector('.loader').classList.remove('display');
+    document.querySelector('.loader').classList.add('no-display');
+  }
+}
+
+var modal = new ModalComp();
+var loader = new LoaderComp();
