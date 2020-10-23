@@ -62,7 +62,6 @@ var serviceCalls = (function() {
       return resp;
     }
   };
-  
   return {
       post: post,
       get: get,

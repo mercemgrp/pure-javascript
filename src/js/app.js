@@ -1,10 +1,8 @@
-var MY_NOTES = MY_NOTES || {};
-
 const App = (function () {
     var eventListeners = function() {
-    document.addEventListener('paste', e => {
-        e.preventDefault();
-        document.execCommand('inserttext', false, e.clipboardData.getData('text/plain'));
+        document.addEventListener('paste', e => {
+            e.preventDefault();
+            document.execCommand('inserttext', false, e.clipboardData.getData('text/plain'));
         });
     }    
     return {
@@ -15,12 +13,9 @@ const App = (function () {
             }  
             eventListeners(); 
         }
-
     }
 }());
 App.load();
 
-var instanciaD = function(){};
-console.log('instanciaD', instanciaD);
   
 

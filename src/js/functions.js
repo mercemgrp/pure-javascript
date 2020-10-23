@@ -1,4 +1,4 @@
-const Functions = (function () {
+var Functions = (function () {
     var calculateHeight = function() {
         const windowHeight = window.innerHeight;
         const headerHeight = document.getElementsByTagName('header')[0].offsetHeight;
@@ -26,7 +26,5 @@ const Functions = (function () {
            }
            calculateHeight();
        }
-       
-
     }
 }());

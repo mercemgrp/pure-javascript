@@ -1,3 +1,4 @@
+var MY_NOTES = MY_NOTES || {};
 const JSFiles = [
     'src/js/functions.js',
     'src/js/app.js',

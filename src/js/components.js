@@ -189,7 +189,7 @@ var components = (function() {
           const elem = document.querySelector('#note_content');
           const html = elem.innerHTML;
           document.querySelector('#note_content').innerHTML = '';
-          Functions.resize();
+          Functionss.resize();
           document.querySelector('#note_content').style.height = (elem.offsetHeight - 20) + 'px';
           document.querySelector('#note_content').innerHTML = html;
           document.querySelector('.note-form-section--edit-color--link')
