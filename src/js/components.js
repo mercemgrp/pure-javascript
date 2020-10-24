@@ -1,184 +1,182 @@
-var components = (function() {
-    var input = (function (data) {
-      return {
-        getTmpl: function() {
-          const content = data.textarea ? `<div contenteditable="true" class="div-editable-content" id="${data.id}" name="${data.id}">${data.value ? data.value : ''}</div>`
-                                        : `<input class="div-control--input--input" id="${data.id}" name="${data.id}" placeholder="${data.placeholder ? data.placeholder : ''}" ${data.required ? 'required' : ''} value="${data.value ? data.value : ''}"></input>`;
-          return `<div class="div-control display-flex ${data.divClass || ''}">
-          <label>${data.title}</label>
-            <div class="div-control--input ${data.textarea ? 'div-editable' : ''}">
-              ${content}
-            </div>
-            <div class="error hidden"><p>Campo obligatorio</p></div>
-          </div>
-          `
-        },
-        checkError: function() {
-          if (!data.required) {
-            return false;
-          }
-          const elem = document.querySelector(`#${data.id}`);
-          let content = data.textarea ? elem.innerHTML.replaceAll('<br>', '').trim() : elem.value;
-          if (!content) {
-              elem.parentElement.parentElement.querySelector('.error').classList.remove('hidden');
-              elem.parentElement.classList.add('div-control--error');
-          }
-          return content ? false : true;
-        },
-        getValue: function() {
-          if (data.textarea) {
-            return document.querySelector(`#${data.id}`).innerHTML;
-          } else {
-            return document.querySelector(`#${data.id}`).value;
-          }
-        },
-        reset: function() {
-          let titleErrorClasses = document.querySelector(`#${data.id}`)
-          .parentElement.parentElement.querySelector('.error').classList;
-          if (!titleErrorClasses.contains('hidden')) {
-            titleErrorClasses.add('hidden');
-          }
-          let titleBorderClasses = document.querySelector(`#${data.id}`)
-          .parentElement.classList;
-          if (titleBorderClasses.contains('div-control--error')) {
-            titleBorderClasses.remove('div-control--error');
-          }
-        }
-      }
-    });
-    var noteForm = (function () {
-      var titleData = {
-        id: 'note_title',
-        title: '',
-        required: true,
-      };
-      var contentData = {
-        id: 'note_content',
-        title: '',
-        required: true,
-        textarea: true,
-        divClass: 'note-form-section-content'
-      } 
-      var myNote;
-      var titleComp = components.input(titleData);
-      var contentComp = components.input(contentData);
-    
-      var reset = function() {
-        titleComp.reset();
-        contentComp.reset();
-      }
-      var colorsModalTmpl = function() {
-        const colors = ['classic', 'light-blue', 'light-pink'];
-        const resultListTmpl = colors.reduce((listTmpl, currentValue) => listTmpl +=
-          `<a class="${currentValue} edit-buttons-colors-option--elem" color="${currentValue}">
-          </a>`, ''
-        );
-        return `
-          <div class="edit-buttons-colors-option no-display">
-            <div class="edit-buttons-colors-option--close">Cancelar</div>
-            <div class="edit-buttons-colors-option--list display-flex-row">
-              ${resultListTmpl}  
-            </div>
-          </div>`;
-      }
-      return {
-        getTmpl: function(elem) {
-          myNote = elem;
-          titleData.value = elem.title;
-          contentData.value = elem.content;
-          return `<div class="note-form ${elem.id ? 'note-form-edit' : 'note-form-create'} ${elem.style ? elem.style : 'classic'}">
-            <section class="note-form-section display-flex-grow ">
-            <div class="display-flex edit-buttons">
-              <ul class="display-flex-row">
-                <li class="display-flex note-form-section--edit-color"><a class="note-form-section--edit-color--link">C</a></li>
-              </ul>
-            </div>
-            <form id="noteForm" name="noteForm" class="display-flex-grow">
-            ${titleComp.getTmpl()}
-            ${contentComp.getTmpl()}
 
-              <div class="note-form-section--button">
-              <ul>
-                <li class="note-form-section--button-accept">
-                  <a class="page-buttons-accept">
-                    <i class="im ${elem.id ? 'im-check-mark' : 'im-check-mark'}"></i>
-                  </a>
-                </li>
-              </ul>
-            </div>
-            </form>
-          </section>
-          </div>
-          ${colorsModalTmpl()}`;
-        },
-        load: function() {
-          const elem = document.querySelector('#note_content');
-          const html = elem.innerHTML;
-          document.querySelector('#note_content').innerHTML = '';
-          Functions.resize();
-          document.querySelector('#note_content').style.height = (elem.offsetHeight - 20) + 'px';
-          document.querySelector('#note_content').innerHTML = html;
-          document.querySelector('.note-form-section--edit-color--link')
-            .addEventListener('click', e => {
-              e.preventDefault();
-              this.toggleColors();
-            });
-          document.querySelectorAll('.edit-buttons-colors-option--elem').forEach(item => {
-            item.addEventListener('click', e => {
-              e.preventDefault();
-              this.selectColor(event.target.getAttribute('color'));
-            });
-          });
-          document.querySelectorAll('.edit-buttons-colors-option--close').forEach(item => {
-            item.addEventListener('click', e => {
-              e.preventDefault();
-              this.toggleColors();
-            })
-          });
-        },
-        toggleColors: function() {
-          const elem = document.querySelector('.edit-buttons-colors-option');
-          if (elem.classList.contains('no-display')) {
-            elem.classList.remove('no-display');
-            elem.classList.add('display-flex');
-          } else {
-            elem.classList.add('no-display');
-            elem.classList.remove('display-flex');
-          }
-        },
-        selectColor: function(color) {
-          document.querySelector('.note-form').classList.remove(myNote.style ? myNote.style : 'classic');
-          myNote.style = color;
-          document.querySelector('.note-form').classList.add(myNote.style);
-          this.toggleColors();
-        },
-        onSubmit: function() {
-          reset();
-          let errorTitle = titleComp.checkError();
-          let errorContent = contentComp.checkError();
-            if (errorTitle || errorContent) {
-              return false;
-            }
-          const title = titleComp.getValue();
-          const content = contentComp.getValue();
-          if (!title || !content) {
-            return;
-          }
-          myNote.title = title;
-          myNote.content = content;
-          return myNote;
-        },
-        cancel: function() {
-          ROUTER.load('/list');
-        }
+
+  class InputComp {
+    data;
+    constructor(param) {
+      this.data = param;
+    }
+    getTmpl() {
+      const content = this.data.textarea ? `<div contenteditable="true" class="div-editable-content" id="${this.data.id}" name="${this.data.id}">${this.data.value ? this.data.value : ''}</div>`
+                                    : `<input class="div-control--input--input" id="${this.data.id}" name="${this.data.id}" placeholder="${this.data.placeholder ? this.data.placeholder : ''}" ${this.data.required ? 'required' : ''} value="${this.data.value ? this.data.value : ''}"></input>`;
+      return `<div class="div-control display-flex ${this.data.divClass || ''}">
+      <label>${this.data.title}</label>
+        <div class="div-control--input ${this.data.textarea ? 'div-editable' : ''}">
+          ${content}
+        </div>
+        <div class="error hidden"><p>Campo obligatorio</p></div>
+      </div>
+      `
+    }
+    checkError() {
+      if (!this.data.required) {
+        return false;
       }
-    });
-    return {
-      input,
-      noteForm
+      const elem = document.querySelector(`#${this.data.id}`);
+      let content = this.data.textarea ? elem.innerHTML.replaceAll('<br>', '').trim() : elem.value;
+      if (!content) {
+          elem.parentElement.parentElement.querySelector('.error').classList.remove('hidden');
+          elem.parentElement.classList.add('div-control--error');
+      }
+      return content ? false : true;
+    }
+    getValue() {
+      if (this.data.textarea) {
+        return document.querySelector(`#${this.data.id}`).innerHTML;
+      } else {
+        return document.querySelector(`#${this.data.id}`).value;
+      }
+    }
+    reset() {
+      let titleErrorClasses = document.querySelector(`#${this.data.id}`)
+      .parentElement.parentElement.querySelector('.error').classList;
+      if (!titleErrorClasses.contains('hidden')) {
+        titleErrorClasses.add('hidden');
+      }
+      let titleBorderClasses = document.querySelector(`#${this.data.id}`)
+      .parentElement.classList;
+      if (titleBorderClasses.contains('div-control--error')) {
+        titleBorderClasses.remove('div-control--error');
+      }
+    }
+  }
+class NoteFormComp {
+  myNote;
+  titleComp;
+  contentComp;
+  constructor() {
+    let titleData = {
+      id: 'note_title',
+      title: '',
+      required: true,
+    };
+    let contentData = {
+      id: 'note_content',
+      title: '',
+      required: true,
+      textarea: true,
+      divClass: 'note-form-section-content'
     } 
-  })();
+    this.titleComp = new InputComp(titleData);
+    this.contentComp = new InputComp(contentData);
+  }
+  getTmpl(elem) {
+    this.myNote = elem;
+    this.titleComp.data.value = elem.title;
+    this.contentComp.data.value = elem.content;
+    return `<div class="note-form ${elem.id ? 'note-form-edit' : 'note-form-create'} ${elem.style ? elem.style : 'classic'}">
+      <section class="note-form-section display-flex-grow ">
+      <div class="display-flex edit-buttons">
+        <ul class="display-flex-row">
+          <li class="display-flex note-form-section--edit-color"><a class="note-form-section--edit-color--link">C</a></li>
+        </ul>
+      </div>
+      <form id="noteForm" name="noteForm" class="display-flex-grow">
+      ${this.titleComp.getTmpl()}
+      ${this.contentComp.getTmpl()}
 
+        <div class="note-form-section--button">
+        <ul>
+          <li class="note-form-section--button-accept">
+            <a class="page-buttons-accept">
+              <i class="im ${elem.id ? 'im-check-mark' : 'im-check-mark'}"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      </form>
+    </section>
+    </div>
+    ${this.colorsModalTmpl()}`;
+  }
+  load() {
+    const elem = document.querySelector('#note_content');
+    const html = elem.innerHTML;
+    document.querySelector('#note_content').innerHTML = '';
+    Functions.resize();
+    document.querySelector('#note_content').style.height = (elem.offsetHeight - 20) + 'px';
+    document.querySelector('#note_content').innerHTML = html;
+    document.querySelector('.note-form-section--edit-color--link')
+      .addEventListener('click', e => {
+        e.preventDefault();
+        this.toggleColors();
+      });
+    document.querySelectorAll('.edit-buttons-colors-option--elem').forEach(item => {
+      item.addEventListener('click', e => {
+        e.preventDefault();
+        this.selectColor(event.target.getAttribute('color'));
+      });
+    });
+    document.querySelectorAll('.edit-buttons-colors-option--close').forEach(item => {
+      item.addEventListener('click', e => {
+        e.preventDefault();
+        this.toggleColors();
+      })
+    });
+  }
+  toggleColors() {
+    const elem = document.querySelector('.edit-buttons-colors-option');
+    if (elem.classList.contains('no-display')) {
+      elem.classList.remove('no-display');
+      elem.classList.add('display-flex');
+    } else {
+      elem.classList.add('no-display');
+      elem.classList.remove('display-flex');
+    }
+  }
+  selectColor(color) {
+    document.querySelector('.note-form').classList.remove(this.myNote.style ? this.myNote.style : 'classic');
+    this.myNote.style = color;
+    document.querySelector('.note-form').classList.add(this.myNote.style);
+    this.toggleColors();
+  }
+  onSubmit() {
+    this.reset();
+    let errorTitle = this.titleComp.checkError();
+    let errorContent = this.contentComp.checkError();
+      if (errorTitle || errorContent) {
+        return false;
+      }
+    const title = this.titleComp.getValue();
+    const content = this.contentComp.getValue();
+    if (!title || !content) {
+      return;
+    }
+    this.myNote.title = title;
+    this.myNote.content = content;
+    return this.myNote;
+  }
+  cancel() {
+    ROUTER.load('/list');
+  }
+    reset() {
+    this.titleComp.reset();
+    this.contentComp.reset();
+  }
+  colorsModalTmpl() {
+    const colors = ['classic', 'light-blue', 'light-pink'];
+    const resultListTmpl = colors.reduce((listTmpl, currentValue) => listTmpl +=
+      `<a class="${currentValue} edit-buttons-colors-option--elem" color="${currentValue}">
+      </a>`, ''
+    );
+    return `
+      <div class="edit-buttons-colors-option no-display">
+        <div class="edit-buttons-colors-option--close">Cancelar</div>
+        <div class="edit-buttons-colors-option--list display-flex-row">
+          ${resultListTmpl}  
+        </div>
+      </div>`;
+  }
+}  
 class ModalComp {
   constructor() {
     var modalElem = document.createElement('div');

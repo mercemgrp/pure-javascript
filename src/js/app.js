@@ -1,3 +1,9 @@
+
+var MY_NOTES = MY_NOTES || {};
+MY_NOTES = {
+    currentPage: null
+}
+
 const App = (function () {
     var eventListeners = function() {
         document.addEventListener('paste', e => {

@@ -79,7 +79,8 @@ var myNotes = (function () {
             loader.close();
             return response;
           })
-          .catch(err => {
+          .catch(e => {
+            console.error('myNotes.getNote :: error :: ', e);
             loader.close();
             throw(err)
           })
@@ -92,7 +93,8 @@ var myNotes = (function () {
               notes = response.data;
               return response.data;
           })
-          .catch(err => {
+          .catch(e => {
+            console.error('myNotes.getNotes :: error :: ', e);
             loader.close();
             throw(err)
           })
@@ -105,7 +107,8 @@ var myNotes = (function () {
             notes = response.data;
             return response.data;
           })
-          .catch(err => {
+          .catch(e => {
+            console.error('myNotes.deleteNote :: error :: ', e);
             loader.close();
             throw(err)
           })
@@ -118,7 +121,8 @@ var myNotes = (function () {
             notes = response.data;
             return response.data;
           })
-          .catch(err => {
+          .catch(e => {
+            console.error('myNotes.editNote :: error :: ', e);
             loader.close();
             throw(err)
           })
@@ -133,6 +137,7 @@ var myNotes = (function () {
             return response.data;
           })
           .catch(err => {
+            console.error('myNotes.createNote :: error :: ', e);
             loader.close();
             throw(err)
           })

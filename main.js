@@ -1,4 +1,5 @@
-var MY_NOTES = MY_NOTES || {};
+
+
 const JSFiles = [
     'src/js/functions.js',
     'src/js/app.js',
@@ -6,7 +7,8 @@ const JSFiles = [
     'src/js/pages.js',
     'src/js/services.js',
     'src/js/router/routes.js',
-    'src/js/router/router.js'
+    'src/js/router/router.js',
+    'src/js/router/index.js'
 ];
 const CSSFiles = [
     'src/stylesheets/css/generic.css',

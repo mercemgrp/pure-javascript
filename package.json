@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "ng": "ng",
+    "build": "npm run process-styles && babel src -d dist",
     "start": "npm run process-styles && live-server --port=3000 --entry-file='./index.html'",
     "watch-scss": "node-sass --watch ./src/stylesheets/scss --output ./src/stylesheets/css",
     "compile-styles": "node-sass --output-style expanded --source-map true --source-map-contents true --precision 6 src/stylesheets/scss/styles.scss src/stylesheets/css/styles.css",
@@ -15,6 +16,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-latest": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
     "clean-css-cli": "^4.3.0",
     "css-loader": "^5.0.0",
     "node-sass": "^4.14.1",

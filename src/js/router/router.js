@@ -1,5 +1,10 @@
-const ROUTER = (function (paths) {   
-  var initRouter = function() {
+class Router  {   
+  paths;
+  constructor(paths) {
+    this.paths = paths;
+    this.initRouter();
+  }
+  initRouter() {
     const {
         location: {
             hash = "/"
@@ -8,59 +13,61 @@ const ROUTER = (function (paths) {
     let URI = (!hash || hash === "/") ? "#/list" : hash;
     URI = URI.indexOf('#') === 0 ? URI.substring(1) : hash;
     this.load(URI);
-  };
-  var load = function (page = "/list") {
-    let template = paths[page];
+  }
+  load(page = "/list") {
+    let component = this.paths[page];
     let params = {};
-    if (!template) {
-      Object.keys(paths).forEach(
+    if (!component) {
+      Object.keys(this.paths).forEach(
         key => {
-          const pathWithoutParams = getPathWithoutPathParams(key) || false;
+          const pathWithoutParams = this.getPathWithoutPathParams(key) || false;
           if(page.indexOf(pathWithoutParams) !== -1) {
-            params = getPathParams(key, page);
-            template = paths[key];
+            params = this.getPathParams(key, page);
+            component = this.paths[key];
           }
         }
       ); 
     }
-    if (template) {
+    if (component) {
       try {
-        const templateRendered = template.func(params);
+          MY_NOTES.currentPage = new component(params);
+          const templateRendered = MY_NOTES.currentPage.getTmpl();
         if (typeof templateRendered === 'object') {
           templateRendered.then(
             resp => {
               Functions.render(resp, document.querySelector("#content"));
-              if (template.load) {
-                template.load();
+              if (MY_NOTES.currentPage.load) {
+                MY_NOTES.currentPage.load();
               }
               window.history.pushState({}, "", '/#' + page);    
             }
           )
         } else {
           Functions.render(templateRendered, document.querySelector("#content"));
-          if (template.load) {
-            template.load();
+          if (MY_NOTES.currentPage.load) {
+            MY_NOTES.currentPage.load();
           }
           window.history.pushState({}, "", '/#' + page);
         }
 
-      } catch(error) {
-        Functions.render(pages.error.getTmpl, document.querySelector('#content'));
+      } catch(e) {
+        console.error('routes.js :: error :: ', e);
+        Functions.render(new Error().getTmpl, document.querySelector('#content'));
         window.history.pushState({}, "", '/#/error');  
       }
     } else {
-      Functions.render(pages.error.getTmpl, document.querySelector('#content'));
+      Functions.render(new Error().getTmpl, document.querySelector('#content'));
         window.history.pushState({}, "", '/#/error');  
         window.history.pushState({}, "", '/#');
     }
   }
 
-  var getPathWithoutPathParams = function(str) {
+  getPathWithoutPathParams(str) {
     const index = str.indexOf('{{');
     return str.substring(0, index);
   }
 
-  var getPathParams = function(varPath, path) {
+  getPathParams(varPath, path) {
     const varPathSplit = varPath.split('/');
     const pathSplit = path.split('/');
     let paramObj = {};
@@ -72,9 +79,4 @@ const ROUTER = (function (paths) {
     }
     return paramObj;
   } 
-  return {
-    initRouter,  
-    load
-  }
-})(PATHS);
-ROUTER.initRouter();
+}
