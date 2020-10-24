@@ -1,18 +1,17 @@
 
-
 const JSFiles = [
-    'src/js/functions.js',
-    'src/js/app.js',
-    'src/js/components.js',
-    'src/js/pages.js',
-    'src/js/services.js',
-    'src/js/router/routes.js',
-    'src/js/router/router.js',
-    'src/js/router/index.js'
+    'js/functions.js',
+    'js/app.js',
+    'js/components.js',
+    'js/pages.js',
+    'js/services.js',
+    'js/router/routes.js',
+    'js/router/router.js',
+    'js/router/index.js'
 ];
 const CSSFiles = [
-    'src/stylesheets/css/generic.css',
-    'src/stylesheets/css/styles.css'
+    'stylesheets/css/generic.css',
+    'stylesheets/css/styles.css'
 ];
 const LoadFiles = function() {
     var loadJSSinc = function(JSFiles, i) {

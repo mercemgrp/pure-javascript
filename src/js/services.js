@@ -82,7 +82,7 @@ var myNotes = (function () {
           .catch(e => {
             console.error('myNotes.getNote :: error :: ', e);
             loader.close();
-            throw(err)
+            throw(e)
           })
       },
       getNotes: function() {
@@ -96,7 +96,7 @@ var myNotes = (function () {
           .catch(e => {
             console.error('myNotes.getNotes :: error :: ', e);
             loader.close();
-            throw(err)
+            throw(e)
           })
       },
       deleteNote: function(id) {
@@ -110,7 +110,7 @@ var myNotes = (function () {
           .catch(e => {
             console.error('myNotes.deleteNote :: error :: ', e);
             loader.close();
-            throw(err)
+            throw(e)
           })
       },
       editNote: function(data) {
@@ -124,7 +124,7 @@ var myNotes = (function () {
           .catch(e => {
             console.error('myNotes.editNote :: error :: ', e);
             loader.close();
-            throw(err)
+            throw(e)
           })
           
       },
@@ -136,10 +136,10 @@ var myNotes = (function () {
             notes = response.data;
             return response.data;
           })
-          .catch(err => {
+          .catch(e => {
             console.error('myNotes.createNote :: error :: ', e);
             loader.close();
-            throw(err)
+            throw(e)
           })
       }
     }       
