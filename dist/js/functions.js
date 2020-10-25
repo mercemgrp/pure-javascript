@@ -19,7 +19,7 @@ var Functions = function () {
         resize: function resize() {
             calculateHeight();
         },
-        render: function render(template, node) {
+        render: function render(template, node, loadFunction) {
             resetStyles();
             if (!node) {
                 return;

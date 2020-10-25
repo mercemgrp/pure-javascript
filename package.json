@@ -6,11 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "ng": "ng",
-    "build": "npm run process-styles && babel src -d dist",
-    "start": "npm run process-styles && cd src && live-server --port=3000 --entry-file='index.html'",
-    "watch-scss": "node-sass --watch ./src/stylesheets/scss --output ./src/stylesheets/css",
-    "compile-styles": "node-sass --output-style expanded --source-map true --source-map-contents true --precision 6 src/stylesheets/scss/styles.scss src/stylesheets/css/styles.css",
-    "css-minify": "cleancss --level 1 --format breaksWith=lf --source-map --source-map-inline-sources --output src/stylesheets/css/styles.min.css src/stylesheets/css/styles.css",
+    "build": "babel src --out-dir dist",
+    "start": "npm run compile-styles && cd dist && live-server --port=3000 --entry-file='index.html'",
+    "compile-styles-watch": "node-sass --watch src/styles/css/ -o src/styles/css/",
+    "compile-styles": "node-sass src/styles/css/ -o src/styles/css/",
+    "css-minify": "cleancss --level 1 --format breaksWith=lf --source-map --source-map-inline-sources --output src/styles/css/styles.min.css src/styles/css/styles.css",
     "process-styles": "npm run compile-styles && npm run css-minify"
   },
   "author": "",
@@ -21,11 +21,8 @@
     "babel-preset-latest": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "clean-css-cli": "^4.3.0",
+    "copyfiles": "^2.4.0",
     "css-loader": "^5.0.0",
-    "node-sass": "^4.14.1",
-    "nodemon": "^2.0.5"
-  },
-  "dependencies": {
-    "vanillajs": "^1.0.1"
+    "node-sass": "^4.14.1"
   }
 }

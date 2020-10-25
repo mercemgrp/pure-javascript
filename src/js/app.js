@@ -1,8 +1,11 @@
 
+var ROUTER;
 var MY_NOTES = MY_NOTES || {};
-MY_NOTES = {
-    currentPage: null
-}
+
+window.addEventListener('load', () => {
+    App.load();
+    ROUTER = new Router(PATHS);
+})
 
 const App = (function () {
     var eventListeners = function() {
@@ -21,7 +24,7 @@ const App = (function () {
         }
     }
 }());
-App.load();
+
 
   
 

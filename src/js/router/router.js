@@ -1,5 +1,8 @@
 class Router  {   
   paths;
+  currentPage;
+  currentComponent;
+
   constructor(paths) {
     this.paths = paths;
     this.initRouter();
@@ -30,24 +33,15 @@ class Router  {
     }
     if (component) {
       try {
+        this.currentPage = new component(params);
           MY_NOTES.currentPage = new component(params);
-          const templateRendered = MY_NOTES.currentPage.getTmpl();
+          const templateRendered = this.currentPage.getTmpl();
         if (typeof templateRendered === 'object') {
           templateRendered.then(
-            resp => {
-              Functions.render(resp, document.querySelector("#content"));
-              if (MY_NOTES.currentPage.load) {
-                MY_NOTES.currentPage.load();
-              }
-              window.history.pushState({}, "", '/#' + page);    
-            }
+            resp => this.renderAndLoadPage(resp, page)
           )
         } else {
-          Functions.render(templateRendered, document.querySelector("#content"));
-          if (MY_NOTES.currentPage.load) {
-            MY_NOTES.currentPage.load();
-          }
-          window.history.pushState({}, "", '/#' + page);
+          this.renderAndLoadPage(templateRendered, page);
         }
 
       } catch(e) {
@@ -56,10 +50,21 @@ class Router  {
         window.history.pushState({}, "", '/#/error');  
       }
     } else {
-      Functions.render(new Error().getTmpl, document.querySelector('#content'));
+      this.currentPage = '/error';
+      this.currentComponent = new Error();
+      Functions.render(this.currentComponent.getTmpl, document.querySelector('#content'));
         window.history.pushState({}, "", '/#/error');  
         window.history.pushState({}, "", '/#');
     }
+  }
+
+  renderAndLoadPage(template, page) {
+    this.page = page;
+    Functions.render(template, document.querySelector("#content"));
+    if (this.currentPage.load) {
+      this.currentPage.load();
+    }
+    window.history.pushState({}, "", '/#' + page);    
   }
 
   getPathWithoutPathParams(str) {

@@ -1,10 +1,19 @@
+class Component {
+  constructor() {
+
+  }
+  getTmpl() {
+  }
+  load() { }
+  pepe() {}
+}
 class EditNotePage {
   params;
   form;
   constructor(params) {
     this.params = params;
   }
-  getTmpl(){
+  getTmpl() {
     this.form = new NoteFormComp();
     return myNotes.getNote(this.params.id)
       .then(elem => {
@@ -20,7 +29,7 @@ class EditNotePage {
           cancel: false
         });
         return false;
-      });  
+      });
   }
   load() {
     this.form.load();
@@ -31,23 +40,23 @@ class EditNotePage {
       });
   }
   editNote() {
-      var myNote = this.form.onSubmit();
-      if (!myNote) {
-        return;
-      }
-      myNotes.editNote(myNote)
-        .then(() => ROUTER.load('/list'))
-        .catch((e) => {
-          console.error('editNote :: error :: ', e);
-          modal.open({
-            title: '¡Atención!',
-            content: 'Ha ocurrido un error editando la nota',
-            accept: ROUTER.load,
-            paramAccept: '/list',
-            cancel: false
-          });
-          return false;
-        })
+    var myNote = this.form.onSubmit();
+    if (!myNote) {
+      return;
+    }
+    myNotes.editNote(myNote)
+      .then(() => ROUTER.load('/list'))
+      .catch((e) => {
+        console.error('editNote :: error :: ', e);
+        modal.open({
+          title: '¡Atención!',
+          content: 'Ha ocurrido un error editando la nota',
+          accept: ROUTER.load,
+          paramAccept: '/list',
+          cancel: false
+        });
+        return false;
+      })
   }
 }
 
@@ -58,18 +67,18 @@ class NoteListPage {
   }
   getTmpl() {
     return myNotes.getNotes()
-      .then(resp => 
+      .then(resp =>
         `<div class="note-list">
           ${resp.reduce((total, currentValue) => total += this.noteSectionTmpl(currentValue), '')}
           </div>`
-        )
+      )
       .catch((e) => {
         console.error('NoteListPage :: error :: ', e);
         return new Error().getTmpl();
-      })  
+      })
   }
   noteSectionTmpl(elem) {
-    return `<section onClick="MY_NOTES.currentPage.toggle(event, ${elem.id})" class="note-section note-section-hide-content ${elem.style ?  elem.style : 'classic'}" id="note_${elem.id}">
+    return `<section onClick="ROUTER.currentPage.toggle(event, ${elem.id})" class="note-section note-section-hide-content ${elem.style ? elem.style : 'classic'}" id="note_${elem.id}">
         <div class ="note-section-header">
           <div class="note-section-header--title">
             <a>${elem.title} </a>
@@ -82,7 +91,7 @@ class NoteListPage {
                 </a>
               </li>
               <li>
-                <a href="javascript:void(0)" onclick="event.stopPropagation();MY_NOTES.currentPage.deleteNote(${elem.id})">
+                <a href="javascript:void(0)" onclick="event.stopPropagation();ROUTER.currentPage.deleteNote(${elem.id})">
                     <i class="im im-trash-can"></i>
                 </a>
               </li>
@@ -113,8 +122,8 @@ class NoteListPage {
           ROUTER.load('/list');
         }
       );
-      
-    } catch(e) {
+
+    } catch (e) {
       console.error('NoteListPage :: error :: ', e);
       modal.open({
         title: '¡Atención!',
@@ -134,49 +143,50 @@ class NoteListPage {
     }
   }
 }
-class Error {
+class Error{
   constructor() {
 
   }
   getTmpl() {
     return `<section>Página no encontrada</section>`
   }
+  load() {}
 }
-  
+
 class CreateNotePage {
   params = {};
   form;
   constructor() {
   }
   create() {
-      var myNote = this.form.onSubmit();
-      if (!myNote) {
-        return;
-      }
-      myNotes.createNote(myNote)
-        .then(() => ROUTER.load('/list'))
-        .catch((e) => {
-          console.error('createNotePage :: error :: ', e);
-          modal.open({
-            title: '¡Atención!',
-            content: 'Ha ocurrido un error creando la nota',
-            accept: ROUTER.load,
-            paramAccept: '/list',
-            cancel: false
-          });
+    var myNote = this.form.onSubmit();
+    if (!myNote) {
+      return;
+    }
+    myNotes.createNote(myNote)
+      .then(() => ROUTER.load('/list'))
+      .catch((e) => {
+        console.error('createNotePage :: error :: ', e);
+        modal.open({
+          title: '¡Atención!',
+          content: 'Ha ocurrido un error creando la nota',
+          accept: ROUTER.load,
+          paramAccept: '/list',
+          cancel: false
         });
+      });
   }
   getTmpl() {
     this.form = new NoteFormComp();
-    return this.form.getTmpl(this.params); 
+    return this.form.getTmpl(this.params);
   }
   load() {
     document.querySelector('.header-menu--create').classList.add('no-display');
     this.form.load();
     document.querySelector('.note-form-create .note-form-section--button-accept a')
-    .addEventListener('click', e => {
-      e.preventDefault();
-      this.create();
-    });
-  }  
+      .addEventListener('click', e => {
+        e.preventDefault();
+        this.create();
+      });
+  }
 } 

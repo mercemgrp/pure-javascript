@@ -45,22 +45,15 @@ var Router = function () {
       }
       if (component) {
         try {
+          this.currentPage = new component(params);
           MY_NOTES.currentPage = new component(params);
-          var templateRendered = MY_NOTES.currentPage.getTmpl();
+          var templateRendered = this.currentPage.getTmpl();
           if ((typeof templateRendered === "undefined" ? "undefined" : _typeof(templateRendered)) === 'object') {
             templateRendered.then(function (resp) {
-              Functions.render(resp, document.querySelector("#content"));
-              if (MY_NOTES.currentPage.load) {
-                MY_NOTES.currentPage.load();
-              }
-              window.history.pushState({}, "", '/#' + page);
+              return _this.renderAndLoadPage(resp, page);
             });
           } else {
-            Functions.render(templateRendered, document.querySelector("#content"));
-            if (MY_NOTES.currentPage.load) {
-              MY_NOTES.currentPage.load();
-            }
-            window.history.pushState({}, "", '/#' + page);
+            this.renderAndLoadPage(templateRendered, page);
           }
         } catch (e) {
           console.error('routes.js :: error :: ', e);
@@ -68,10 +61,22 @@ var Router = function () {
           window.history.pushState({}, "", '/#/error');
         }
       } else {
-        Functions.render(new Error().getTmpl, document.querySelector('#content'));
+        this.currentPage = '/error';
+        this.currentComponent = new Error();
+        Functions.render(this.currentComponent.getTmpl, document.querySelector('#content'));
         window.history.pushState({}, "", '/#/error');
         window.history.pushState({}, "", '/#');
       }
+    }
+  }, {
+    key: "renderAndLoadPage",
+    value: function renderAndLoadPage(template, page) {
+      this.page = page;
+      Functions.render(template, document.querySelector("#content"));
+      if (this.currentPage.load) {
+        this.currentPage.load();
+      }
+      window.history.pushState({}, "", '/#' + page);
     }
   }, {
     key: "getPathWithoutPathParams",

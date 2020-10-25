@@ -4,6 +4,25 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var Component = function () {
+  function Component() {
+    _classCallCheck(this, Component);
+  }
+
+  _createClass(Component, [{
+    key: 'getTmpl',
+    value: function getTmpl() {}
+  }, {
+    key: 'load',
+    value: function load() {}
+  }, {
+    key: 'pepe',
+    value: function pepe() {}
+  }]);
+
+  return Component;
+}();
+
 var EditNotePage = function () {
   function EditNotePage(params) {
     _classCallCheck(this, EditNotePage);
@@ -92,7 +111,7 @@ var NoteListPage = function () {
   }, {
     key: 'noteSectionTmpl',
     value: function noteSectionTmpl(elem) {
-      return '<section onClick="MY_NOTES.currentPage.toggle(event, ' + elem.id + ')" class="note-section note-section-hide-content ' + (elem.style ? elem.style : 'classic') + '" id="note_' + elem.id + '">\n        <div class ="note-section-header">\n          <div class="note-section-header--title">\n            <a>' + elem.title + ' </a>\n          </div>\n          <div class="note-section-header--additional">\n            <ul class="note-section-header--menu">\n              <li>\n                <a onClick="event.stopPropagation();ROUTER.load(\'/edit/' + elem.id + '\')">\n                    <i class="im im-pencil"></i>\n                </a>\n              </li>\n              <li>\n                <a href="javascript:void(0)" onclick="event.stopPropagation();MY_NOTES.currentPage.deleteNote(' + elem.id + ')">\n                    <i class="im im-trash-can"></i>\n                </a>\n              </li>\n            </ul>\n            <div class="note-section-header--date">' + elem.date + '</div>\n          </div>\n        </div>   \n        <div class="note-section-content">' + elem.content + '</div>\n      </section>';
+      return '<section onClick="ROUTER.currentPage.toggle(event, ' + elem.id + ')" class="note-section note-section-hide-content ' + (elem.style ? elem.style : 'classic') + '" id="note_' + elem.id + '">\n        <div class ="note-section-header">\n          <div class="note-section-header--title">\n            <a>' + elem.title + ' </a>\n          </div>\n          <div class="note-section-header--additional">\n            <ul class="note-section-header--menu">\n              <li>\n                <a onClick="event.stopPropagation();ROUTER.load(\'/edit/' + elem.id + '\')">\n                    <i class="im im-pencil"></i>\n                </a>\n              </li>\n              <li>\n                <a href="javascript:void(0)" onclick="event.stopPropagation();ROUTER.currentPage.deleteNote(' + elem.id + ')">\n                    <i class="im im-trash-can"></i>\n                </a>\n              </li>\n            </ul>\n            <div class="note-section-header--date">' + elem.date + '</div>\n          </div>\n        </div>   \n        <div class="note-section-content">' + elem.content + '</div>\n      </section>';
     }
   }, {
     key: 'deleteNote',
@@ -153,6 +172,9 @@ var Error = function () {
     value: function getTmpl() {
       return '<section>P\xE1gina no encontrada</section>';
     }
+  }, {
+    key: 'load',
+    value: function load() {}
   }]);
 
   return Error;

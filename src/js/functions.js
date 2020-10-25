@@ -17,7 +17,7 @@ var Functions = (function () {
         resize: function() {
             calculateHeight();
         },
-        render: function (template, node) {
+        render: function (template, node, loadFunction) {
             resetStyles();
            if(!node) { return; }
            const data = (typeof template === 'function' ? template() : template);

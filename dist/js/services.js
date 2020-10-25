@@ -5,7 +5,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 var ENV = {
   api: 'http://localhost:8888'
 };
-var serviceCalls = function () {
+var APICalls = function () {
   var deleteD = function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
       var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
@@ -217,61 +217,61 @@ var myNotes = function () {
   return {
     getNote: function getNote(id) {
       loader.open();
-      return serviceCalls.get(ENV.api + '/notes/' + id).then(function (response) {
+      return APICalls.get(ENV.api + '/notes/' + id).then(function (response) {
         loader.close();
         return response;
       }).catch(function (e) {
         console.error('myNotes.getNote :: error :: ', e);
         loader.close();
-        throw err;
+        throw e;
       });
     },
     getNotes: function getNotes() {
       loader.open();
-      return serviceCalls.get(ENV.api + '/notes').then(function (response) {
+      return APICalls.get(ENV.api + '/notes').then(function (response) {
         loader.close();
         notes = response.data;
         return response.data;
       }).catch(function (e) {
         console.error('myNotes.getNotes :: error :: ', e);
         loader.close();
-        throw err;
+        throw e;
       });
     },
     deleteNote: function deleteNote(id) {
       loader.open();
-      return serviceCalls.delete(ENV.api + '/notes/' + id).then(function (response) {
+      return APICalls.delete(ENV.api + '/notes/' + id).then(function (response) {
         loader.close();
         notes = response.data;
         return response.data;
       }).catch(function (e) {
         console.error('myNotes.deleteNote :: error :: ', e);
         loader.close();
-        throw err;
+        throw e;
       });
     },
     editNote: function editNote(data) {
       loader.open();
-      return serviceCalls.post(ENV.api + '/notes/' + data.id, data).then(function (response) {
+      return APICalls.post(ENV.api + '/notes/' + data.id, data).then(function (response) {
         loader.close();
         notes = response.data;
         return response.data;
       }).catch(function (e) {
         console.error('myNotes.editNote :: error :: ', e);
         loader.close();
-        throw err;
+        throw e;
       });
     },
     createNote: function createNote(data) {
       loader.open();
-      return serviceCalls.put(ENV.api + '/notes', data).then(function (response) {
+      return APICalls.put(ENV.api + '/notes', data).then(function (response) {
         loader.close();
         notes = response.data;
         return response.data;
-      }).catch(function (err) {
+      }).catch(function (e) {
         console.error('myNotes.createNote :: error :: ', e);
         loader.close();
-        throw err;
+        throw e;
       });
     }
   };

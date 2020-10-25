@@ -1,7 +1,7 @@
 const ENV = {
   api: 'http://localhost:8888'
 };
-var serviceCalls = (function() {
+var APICalls = (function() {
   var deleteD = async function deleteData(url = '', data = {}) {
     var myHeaders = new Headers();
     const response = await fetch(url, {
@@ -74,7 +74,7 @@ var myNotes = (function () {
     return {
       getNote: function(id) {
         loader.open();
-        return serviceCalls.get(`${ENV.api}/notes/${id}`)
+        return APICalls.get(`${ENV.api}/notes/${id}`)
           .then(response => {
             loader.close();
             return response;
@@ -87,7 +87,7 @@ var myNotes = (function () {
       },
       getNotes: function() {
         loader.open();
-        return serviceCalls.get(`${ENV.api}/notes`)
+        return APICalls.get(`${ENV.api}/notes`)
           .then(response => {
             loader.close();
               notes = response.data;
@@ -101,7 +101,7 @@ var myNotes = (function () {
       },
       deleteNote: function(id) {
         loader.open();
-          return serviceCalls.delete(`${ENV.api}/notes/${id}`)
+          return APICalls.delete(`${ENV.api}/notes/${id}`)
           .then(response => {
             loader.close();
             notes = response.data;
@@ -115,7 +115,7 @@ var myNotes = (function () {
       },
       editNote: function(data) {
         loader.open();
-          return serviceCalls.post(`${ENV.api}/notes/${data.id}`, data)
+          return APICalls.post(`${ENV.api}/notes/${data.id}`, data)
           .then(response => {
             loader.close();
             notes = response.data;
@@ -130,7 +130,7 @@ var myNotes = (function () {
       },
       createNote: function(data) {
         loader.open();
-          return serviceCalls.put(`${ENV.api}/notes`, data)
+          return APICalls.put(`${ENV.api}/notes`, data)
           .then(response => {
             loader.close();
             notes = response.data;

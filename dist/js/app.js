@@ -1,9 +1,12 @@
 'use strict';
 
+var ROUTER;
 var MY_NOTES = MY_NOTES || {};
-MY_NOTES = {
-    currentPage: null
-};
+
+window.addEventListener('load', function () {
+    App.load();
+    ROUTER = new Router(PATHS);
+});
 
 var App = function () {
     var eventListeners = function eventListeners() {
@@ -22,4 +25,3 @@ var App = function () {
         }
     };
 }();
-App.load();
