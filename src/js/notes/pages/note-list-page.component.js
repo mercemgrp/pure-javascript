@@ -1,11 +1,11 @@
 
-export class NoteListPageComponent {
+class NoteListPageComponent {
   params;
   constructor(params) {
     this.params = params;
   }
   getTmpl() {
-    return myNotes.getNotes()
+    return NotesServices.getNotes()
       .then(resp => 
         `<div class="note-list">
           ${resp.reduce((total, currentValue) => total += this.noteSectionTmpl(currentValue), '')}
@@ -51,7 +51,7 @@ export class NoteListPageComponent {
   }
   deleteNoteConfirm(id) {
     try {
-      myNotes.deleteNote(id).then(
+      NotesServices.deleteNote(id).then(
         response => ROUTER.load('/list'),
         error => {
           modal.open({

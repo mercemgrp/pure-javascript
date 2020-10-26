@@ -1,5 +1,5 @@
-var Functions = (function () {
-    var calculateHeight = function() {
+ class Functions {
+   static calculateHeight() {
         const windowHeight = window.innerHeight;
         const headerHeight = document.getElementsByTagName('header')[0].offsetHeight;
         const footerHeight = document.querySelector('footer') ? document.querySelector('footer').offsetHeight : 0;
@@ -10,21 +10,19 @@ var Functions = (function () {
             document.querySelector('#content').style.height = contentHeight + 'px';
         }
     }
-    var resetStyles = function() {
+    static resetStyles() {
         document.querySelector('.header-menu--create').classList.remove('no-display');
     }
-    return {
-        resize: function() {
-            calculateHeight();
-        },
-        render: function (template, node, loadFunction) {
-            resetStyles();
-           if(!node) { return; }
-           const data = (typeof template === 'function' ? template() : template);
-           if(data) {
-            node.innerHTML = data;   
-           }
-           calculateHeight();
-       }
+    static resize() {
+        this.calculateHeight();
     }
-}());
+    static render(template, node) {
+        this.resetStyles();
+       if(!node) { return; }
+       const data = (typeof template === 'function' ? template() : template);
+       if(data) {
+        node.innerHTML = data;   
+       }
+       this.calculateHeight();
+   }
+}

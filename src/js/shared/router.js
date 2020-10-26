@@ -1,3 +1,9 @@
+const PATHS = {
+  '/list':  NoteListPageComponent,
+  '/edit/{{id}}': EditNotePageComponent,
+  '/create': CreateNotePageComponent
+}
+
 class Router  {   
   paths;
   currentPage;
@@ -34,7 +40,6 @@ class Router  {
     if (component) {
       try {
         this.currentPage = new component(params);
-          MY_NOTES.currentPage = new component(params);
           const templateRendered = this.currentPage.getTmpl();
         if (typeof templateRendered === 'object') {
           templateRendered.then(
@@ -45,16 +50,14 @@ class Router  {
         }
 
       } catch(e) {
+        this.currentPage = new ErrorPageComponent('Ha ocurrido un error abriendo la página solicitada');
         console.error('routes.js :: error :: ', e);
-        Functions.render(new Error().getTmpl, document.querySelector('#content'));
-        window.history.pushState({}, "", '/#/error');  
+        this.renderAndLoadPage(this.currentPage.getTmpl(), '/error');
       }
     } else {
-      this.currentPage = '/error';
-      this.currentComponent = new Error();
-      Functions.render(this.currentComponent.getTmpl, document.querySelector('#content'));
-        window.history.pushState({}, "", '/#/error');  
-        window.history.pushState({}, "", '/#');
+      console.error('No ha encontrado el componente en las rutas');
+      this.currentPage = new ErrorPageComponent('Página no encontrada');
+      this.renderAndLoadPage(this.currentPage.getTmpl(), '/error');
     }
   }
 

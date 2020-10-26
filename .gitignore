@@ -3,4 +3,9 @@ node_modules
 npm-debug.log
 package-lock.json
 #css
-src/stylesheets/css/styles.*
+src/styles/css/styles.css
+src/styles/css/styles.min.css
+src/styles/css/styles.min.css.map
+
+debug.log
+dist

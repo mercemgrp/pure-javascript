@@ -1,4 +1,4 @@
- export class CreateNotePageComponent {
+  class CreateNotePageComponent {
   params = {};
   form;
   constructor() {
@@ -8,7 +8,7 @@
       if (!myNote) {
         return;
       }
-      myNotes.createNote(myNote)
+      NotesServices.createNote(myNote)
         .then(() => ROUTER.load('/list'))
         .catch((e) => {
           console.error('createNotePage :: error :: ', e);
@@ -22,7 +22,7 @@
         });
   }
   getTmpl() {
-    this.form = new NoteFormComp();
+    this.form = new NoteFormComponent();
     return this.form.getTmpl(this.params); 
   }
   load() {

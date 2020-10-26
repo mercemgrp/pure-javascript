@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "ng": "ng",
-    "build": "babel src --out-dir dist",
-    "start": "npm run compile-styles && cd dist && live-server --port=3000 --entry-file='index.html'",
+    "build": "npm run compile-styles",
+    "start": "npm run build && cd src && live-server --port=3000 --entry-file='index.html'",
     "compile-styles-watch": "node-sass --watch src/styles/css/ -o src/styles/css/",
     "compile-styles": "node-sass src/styles/css/ -o src/styles/css/",
     "css-minify": "cleancss --level 1 --format breaksWith=lf --source-map --source-map-inline-sources --output src/styles/css/styles.min.css src/styles/css/styles.css",
@@ -16,13 +16,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-latest": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
     "clean-css-cli": "^4.3.0",
     "copyfiles": "^2.4.0",
     "css-loader": "^5.0.0",
+    "http-server": "^0.12.3",
     "node-sass": "^4.14.1"
+  },
+  "dependencies": {
   }
 }

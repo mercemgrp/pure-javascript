@@ -1,9 +1,13 @@
 
+
 var ROUTER;
-var MY_NOTES = MY_NOTES || {};
+var modal;
+var loader;
 
 window.addEventListener('load', () => {
     App.load();
+    modal = new ModalComp();
+    loader = new LoaderComponent();
     ROUTER = new Router(PATHS);
 })
 

@@ -1,12 +1,12 @@
-export class EditNotePageComponent {
+ class EditNotePageComponent {
   params;
   form;
   constructor(params) {
     this.params = params;
   }
   getTmpl(){
-    this.form = new NoteFormComp();
-    return myNotes.getNote(this.params.id)
+    this.form = new NoteFormComponent();
+    return NotesServices.getNote(this.params.id)
       .then(elem => {
         return this.form.getTmpl(elem);
       })
@@ -35,7 +35,7 @@ export class EditNotePageComponent {
       if (!myNote) {
         return;
       }
-      myNotes.editNote(myNote)
+      NotesServices.editNote(myNote)
         .then(() => ROUTER.load('/list'))
         .catch((e) => {
           console.error('editNote :: error :: ', e);
