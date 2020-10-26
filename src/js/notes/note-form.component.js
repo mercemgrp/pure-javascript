@@ -11,7 +11,7 @@ class NoteFormComponent {
       let contentData = {
         id: 'note_content',
         title: '',
-        required: true,
+        required: false,
         textarea: true,
         divClass: 'note-form-section-content'
       } 
@@ -97,9 +97,6 @@ class NoteFormComponent {
         }
       const title = this.titleComp.getValue();
       const content = this.contentComp.getValue();
-      if (!title || !content) {
-        return;
-      }
       this.myNote.title = title;
       this.myNote.content = content;
       return this.myNote;

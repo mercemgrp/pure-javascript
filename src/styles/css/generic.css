@@ -1,6 +1,7 @@
 html {
   box-sizing: border-box;
-  font-size: 10px; }
+  font-size: 10px;
+  height: 100%; }
 
 *, li
 *:before,
@@ -45,4 +46,5 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background-image: radial-gradient(circle at 0% 0%, #373b52, #252736 51%, #1d1e26); }
+  background-image: radial-gradient(circle at 0% 0%, #373b52, #252736 51%, #1d1e26);
+  height: 100%; }

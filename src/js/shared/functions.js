@@ -1,12 +1,13 @@
  class Functions {
    static calculateHeight() {
         const windowHeight = window.innerHeight;
-        const headerHeight = document.getElementsByTagName('header')[0].offsetHeight;
+        const bodyHeight = document.querySelector('body').offsetHeight;
+        const headerHeight = document.querySelector('header').offsetHeight;
         const footerHeight = document.querySelector('footer') ? document.querySelector('footer').offsetHeight : 0;
         document.querySelector('#content').removeAttribute('style');
-        const content = document.querySelector('#content').offsetHeight;
-        const contentHeight = windowHeight - headerHeight - footerHeight;
-        if (content < contentHeight) {
+        const currentContentHeight = document.querySelector('#content').offsetHeight;
+        const contentHeight = windowHeight - headerHeight - footerHeight - (bodyHeight - currentContentHeight);
+        if (currentContentHeight < contentHeight) {
             document.querySelector('#content').style.height = contentHeight + 'px';
         }
     }

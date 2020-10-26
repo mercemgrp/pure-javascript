@@ -31,6 +31,7 @@
     document.querySelector('.note-form-create .note-form-section--button-accept a')
     .addEventListener('click', e => {
       e.preventDefault();
+      debugger;
       this.create();
     });
   }  
