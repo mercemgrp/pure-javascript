@@ -1,593 +1,644 @@
-  .main-container {
-    display: flex;
-    background-color: white;
-    flex-direction: column;
-  }
-  .header {
-    justify-content: space-between;
-    width: 100%;
-    height: 50px;
-    position: fixed;
-    display: flex;
-    flex-grow: 1;
-    align-items: center;
-    color: whitesmoke;
-    background-color: black;
-    z-index: 1;
-    &-menu {
-      right: 10px;
-      display: flex;
-      & li {
-        margin-right: 10px;
-      }
-    }
-    &-title {
-      margin-left: 10px;
-      font-size: 18px;
-      font-weight: 600;
-      display: flex;
-    }
-  }
-  
-  .footer {
-    width: 100%;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: black;
-    color: whitesmoke;
-    position: fixed;
-    bottom: 0px;
-
-  }
-
-  #content {
-    @media (max-width: 768px) {
-        width: 100%;
-    }
-    display: flex;
-    background-color: whitesmoke;
-    align-items: center;
-    flex-direction: column;
-    flex-grow: 1;
-    margin-top: 50px;
-    position: relative;
-    align-self: center;
-    width: 25%;
-    overflow-y: scroll;
-    // padding: 20px 0px;
-  }
-  .view-note {
-    padding: 20px 0px;
-    width: 80%;
-    margin: 10px;
-    border: 1px solid black;
-    border-radius: 6px;
-    display: flex;
-    &-title {
-      padding: 5px 0px 0px 5px;
-      font-weight: 600;
-      display: flex;
-      position: relative;
-      &-text {
-        width: 94%;
-      }
-      &-menu {
-        display: flex;
-        position: absolute;
-        right: 5px;
-        & li {
-          padding-left: 5px;
-          & i {
-            font-size: 15px;
-          }
-        }
-      }
-    }
-    &-date {
-      padding: 2px 5px 5px 5px;
-      font-weight: 600;
-      font-size: 10px;
-      text-align: right;
-      border-bottom: 1px solid black;
-    }
-    &-content {
-      padding: 5px;
-      line-height: 1.5;
-    }
-  }
-
-  
-  .note-form {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    &-section {
-      width: 90%;
-      display: flex;
-      flex-direction: column;
-      align-self: center;
-      margin-bottom: 22px;
-      position: relative;
-      & form {
-        position: relative;
-      }
-      &-content {
-        height: 100%;
-      }
-      &--edit-color {
-        background-color: red;
-        animation-duration: 8s;
-        animation-name: colorChanges;
-        animation-iteration-count: infinite;
-        &--link {
-          opacity: 0;
-        }
-      }
-      &--buttons {
-        width: 100%;
-        position: absolute;
-        bottom: 5px;
-        align-self: center;
-      }
-      &--button {
-        bottom: 8px;
-        right: 24px;
-        position: absolute;
-        display: flex;
-        flex-direction: column;
-        color: white;
-        & ul {
-          display: flex;
-        }
-        &-accept {
-          margin-right: 5px;
-          & a {
-            & i {
-              padding: 10px;
-              border-radius: 50%;
-              background: black;
-            }
-          }
-        }
-        &-cancel {
-          & a {
-            & p {
-              padding: 10px;
-              border-radius: 50%;
-              background: black;
-              font-size: 24px;
-              font-weight: 500;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  .edit-buttons {
-    position: relative;
-    padding: 5px;
-    & li {
-      padding: 3px 0px;
-      margin: 5px;
-      width: 30px;
-      height: 30px;
-    }
-    &-colors-option {
-      position: fixed;
-      z-index: 1;
-      left: 0;
-      top: 0;
-      width: 100%; /* Full width */
-      overflow: auto; /* Enable scroll if needed */
-      background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
-      justify-content: center;
-      height: 100%;
-      &--close {
-        top: 15px;
-        right: 28px;
-        position: absolute;
-        display: flex;
-        flex-direction: column;
-        color: white;
-        font-size: 18px;
-      }
-      &--list {
-        position: relative;
-        background-color: transparent;
-        margin: 15% auto; /* 15% from the top and centered */
-        padding: 15px;
-        border: 1px solid #888;
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-      }
-      &--elem {
-        width: 50px;
-        height: 50px;
-        margin: 5px;
-        flex: 1 0 18%;
-
-      }
-    }
-  }
-   
-  .div-control {
-    &--error {
-      border-bottom: 2px solid red;
-    }
-    & label {
-      color: gray;
-      font-size: 1.5rem;
-      line-height: 2.4rem;
-      margin-bottom: 5px;
-    }
-    &--input {
-      position: relative;
-      display: flex;
-      flex-direction: row;
-      width: 100%;
-      margin: 0 auto;
-      border-radius: 2px;
-      padding: 1rem;
-      background: white;
-      border-radius: 6px;
-    }
-    &--input input {
-      flex-grow: 1;
-      color: grey;
-      font-size: 1.5rem;
-      line-height: 2.4rem;
-      vertical-align: middle;
-      &::-webkit-input-placeholder {
-        color: grey;
-     }
-    }
-    &--button {
-      color: gray;
-      font-size: 1.5rem;
-      line-height: 2.4rem;
-      & a {
-        cursor: pointer;
-        border: solid 1px silver;
-        padding: 5px 10px;
-        border-radius: 5px;
-      }
-      & ul{
-       display: flex;
-       & li{
-        margin-right: 10px;
-        border-radius: 6px;
-      }
-     }
-       
-    }
-     
-     
-  }
-  
-  .div-editable {
-    height: calc(100% - 26px);
-    justify-content: space-between;
-    &-content {
-      display:flex;
-      flex-direction: column;
-      width: 100%;
-      background-color: inherit;
-      padding: 2px;
-      // height: 300px;
-      flex-grow: 1;
-      color: grey;
-      font-size: 1.5rem;
-      line-height: 2rem;
-      overflow-y: scroll;
-      &::-webkit-scrollbar {
-        width: 10px;
-      }
-      & div {
-        width: inherit;
-      }
-    /* Track */
-    &::-webkit-scrollbar-track {
-      background: #f1f1f1;
-    }
-    
-    /* Handle */
-    &::-webkit-scrollbar-thumb {
-      background: #888;
-    }
-    
-    /* Handle on hover */
-    &::-webkit-scrollbar-thumb:hover {
-      background: #555;
-    }
-    &:focus {
-      outline: none;
-    }
-  }
+.main-container {
+  display: flex;
+  background-color: whitesmoke;
+  flex-direction: column;
 }
-  
-  .center-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .field-error {
-    color: red;
-  }
-  
-  .hidden {
-    visibility: hidden;
-  }
-
-  .no-display {
-    display: none;
-  }
-  .display {
-    display: block
-  }
-  
-   .button-list {
+.header {
+  justify-content: space-between;
+  width: 100%;
+  height: 50px;
+  position: fixed;
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  color: whitesmoke;
+  background-color: inherit;
+  z-index: 1;
+  &-menu {
+    right: 10px;
     display: flex;
     & li {
       margin-right: 10px;
-      display: flex;
-      & a{
-        cursor: pointer;
-        border: solid 1px silver;
-        padding: 5px 10px;
-        border-radius: 5px;
-     }
+      color: black;
     }
   }
-  
-  .note-list {
-    position: relative;
-    padding: 20px 0px;
+  &-title {
+    margin-left: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    color: black;
+  }
+}
+
+.footer {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  color: whitesmoke;
+  position: fixed;
+  bottom: 0px;
+  & ul {
+    flex-direction: row-reverse;
     width: 100%;
+    display: flex;
+    text-align: center;
+    & li {
+      margin-right: 15px;
+      display: flex;
+      flex-direction: column-reverse;
+      &:first-child {
+        margin-right: 10px;
+      }
+    }
+  }
+
+}
+
+#content {
+  @media (max-width: 768px) {
+      width: 100%;
+  }
+  display: flex;
+  background-color: whitesmoke;
+  align-items: center;
+  flex-direction: column;
+  flex-grow: 1;
+  // margin-top: 50px;
+  margin-top: 30px;
+  position: relative;
+  align-self: center;
+  width: 25%;
+  overflow-y: scroll;
+  // padding: 20px 0px;
+}
+.view-note {
+  padding: 20px 0px;
+  width: 80%;
+  margin: 10px;
+  border: 1px solid black;
+  border-radius: 6px;
+  display: flex;
+  &-title {
+    padding: 5px 0px 0px 5px;
+    font-weight: 600;
+    display: flex;
+    position: relative;
+    &-text {
+      width: 94%;
+    }
+    &-menu {
+      display: flex;
+      position: absolute;
+      right: 5px;
+      & li {
+        padding-left: 5px;
+        & i {
+          font-size: 15px;
+        }
+      }
+    }
+  }
+  &-date {
+    padding: 2px 5px 5px 5px;
+    font-weight: 600;
+    font-size: 10px;
+    text-align: right;
+    border-bottom: 1px solid black;
+  }
+  &-content {
+    padding: 5px;
+    line-height: 1.5;
+  }
+}
+
+
+.note-form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  &-section {
+    width: 90%;
     display: flex;
     flex-direction: column;
     align-self: center;
-
-    & .note-section {
+    margin-bottom: 22px;
+    position: relative;
+    & form {
+      position: relative;
+    }
+    &-content {
+      height: 100%;
+    }
+    &--edit-color {
+      background-color: red;
+      animation-duration: 8s;
+      animation-name: colorChanges;
+      animation-iteration-count: infinite;
+      &--link {
+        opacity: 0;
+      }
+    }
+    &--buttons {
+      width: 100%;
+      position: absolute;
+      bottom: 5px;
+      align-self: center;
+    }
+    &--button {
+      bottom: 8px;
+      right: 24px;
+      position: absolute;
       display: flex;
       flex-direction: column;
-      border-bottom: 0.5px silver solid;
-      align-self: center;
-      width: 95%;
-      margin-bottom: 5px;
-      &-header {
+      color: white;
+      & ul {
         display: flex;
-        flex-direction: row;
-        margin: 10px;
-        font-size: 15px;
-        overflow-wrap: anywhere;
-        justify-content: center;
-        &--title {
-         display: flex;
-         align-self: center;
-         width: 60%;
-         & a {
-           display: flex;
-           width: 100%;
-         }
-       }
-       &--additional {
-         display: flex;
-         flex-direction: column;
-         flex-grow: 1;
-         align-items: flex-end;
-       }
-       &--date {
-         font-weight: 600;
-         font-size: 8px;
-         text-align: right;
-       }
-       &--menu {
-          display: flex;
-          & li {
-           padding: 3px;
-           & i {
-             font-size: 15px;
-           }
-         }
-       }
-     } 
-     &-content {
-       display: flex;
-       flex-direction: column;
-       font-size: 13px;     
-       flex-wrap: wrap-reverse;
-       padding: 10px;
-       border-top: solid 1px silver;
-     }
-     &-hide-content {
-       & .note-section-header {
-        border-bottom: 0px;
       }
-      & .note-section-content {
-        display: none;
+      &-accept {
+        margin-right: 5px;
+        & a {
+          & i {
+            padding: 10px;
+            border-radius: 50%;
+            background: black;
+          }
+        }
       }
-     }
+      &-cancel {
+        & a {
+          & p {
+            padding: 10px;
+            border-radius: 50%;
+            background: black;
+            font-size: 24px;
+            font-weight: 500;
+          }
+        }
+      }
     }
   }
-  
-  .modal {
+}
+
+.edit-buttons {
+  position: relative;
+  padding: 5px;
+  & li {
+    padding: 3px 0px;
+    margin: 5px;
+    width: 30px;
+    height: 30px;
+  }
+  &-colors-option {
     position: fixed;
     z-index: 1;
     left: 0;
     top: 0;
     width: 100%; /* Full width */
-    height: 100%;
     overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    &-content {
+    background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
+    justify-content: center;
+    height: 100%;
+    &--close {
+      top: 15px;
+      right: 28px;
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      color: white;
+      font-size: 18px;
+    }
+    &--list {
       position: relative;
-      background-color: #fefefe;
+      background-color: transparent;
       margin: 15% auto; /* 15% from the top and centered */
       padding: 15px;
       border: 1px solid #888;
-      width: 80%; /* Could be more or less, depending on screen size */
-      top: 25%;
       display: flex;
       flex-direction: column;
-      max-height: 200px;
+      flex-wrap: wrap;
     }
+    &--elem {
+      width: 50px;
+      height: 50px;
+      margin: 5px;
+      flex: 1 0 18%;
+
+    }
+  }
+}
+ 
+.div-control {
+  &--error {
+    border-bottom: 2px solid red;
+  }
+  & label {
+    color: gray;
+    font-size: 1.5rem;
+    line-height: 2.4rem;
+    margin-bottom: 5px;
+  }
+  &--input {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 2px;
+    padding: 1rem;
+    background: white;
+    border-radius: 6px;
+  }
+  &--input input {
+    flex-grow: 1;
+    color: grey;
+    font-size: 1.5rem;
+    line-height: 2.4rem;
+    vertical-align: middle;
+    &::-webkit-input-placeholder {
+      color: grey;
+   }
+  }
+  &--button {
+    color: gray;
+    font-size: 1.5rem;
+    line-height: 2.4rem;
+    & a {
+      cursor: pointer;
+      border: solid 1px silver;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+    & ul{
+     display: flex;
+     & li{
+      margin-right: 10px;
+      border-radius: 6px;
+    }
+   }
+     
+  }
+   
+   
+}
+
+.div-editable {
+  height: calc(100% - 26px);
+  justify-content: space-between;
+  &-content {
+    display:flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: inherit;
+    padding: 2px;
+    // height: 300px;
+    flex-grow: 1;
+    color: grey;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+    & div {
+      width: inherit;
+    }
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+}
+
+.center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.field-error {
+  color: red;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.no-display {
+  display: none;
+}
+.display {
+  display: block
+}
+
+ .button-list {
+  display: flex;
+  & li {
+    margin-right: 10px;
+    display: flex;
+    & a{
+      cursor: pointer;
+      border: solid 1px silver;
+      padding: 5px 10px;
+      border-radius: 5px;
+   }
+  }
+}
+
+.note-list {
+  position: relative;
+  padding: 20px 0px;
+  margin-top: 5px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+
+  & .note-section {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 0.5px silver solid;
+    align-self: center;
+    width: 95%;
+    margin-bottom: 5px;
     &-header {
       display: flex;
-      border-bottom: 1px solid;
-      & h1 {
-        justify-content: center;
-        display: flex;
-        flex-grow: 1;
-        color: gray;
-        font-size: 1.5rem;
-        line-height: 2.4rem;
-        padding-bottom: 5px;
-      }
-    }
-    &-body {
-      display: flex;
-      flex-grow: 1;
+      flex-direction: row;
+      margin: 10px;
+      font-size: 15px;
+      overflow-wrap: anywhere;
       justify-content: center;
-      padding: 10px 0px;
-      color: gray;
-      font-size: 1.5rem;
-      line-height: 2.4rem;
-  
-    }
-    &-footer {
-      display: flex;
-      bottom: 15px;
-      width: 100%;
-      & ul {
+      &--title {
+       display: flex;
+       align-self: center;
+       width: 60%;
+       & a {
+         display: flex;
+         width: 100%;
+       }
+     }
+     &--additional {
+       display: flex;
+       flex-direction: column;
+       flex-grow: 1;
+       align-items: flex-end;
+     }
+     &--date {
+       font-weight: 600;
+       font-size: 8px;
+       text-align: right;
+     }
+     &--menu {
         display: flex;
-        flex-direction: row;
-        width: 100%;
-      }
+        & li {
+         padding: 3px;
+         & i {
+           font-size: 15px;
+         }
+       }
+     }
+   } 
+   &-content {
+     display: flex;
+     flex-direction: column;
+     font-size: 13px;     
+     flex-wrap: wrap-reverse;
+     padding: 10px;
+     border-top: solid 1px silver;
+   }
+   &-hide-content {
+     & .note-section-header {
+      border-bottom: 0px;
     }
-    
+    & .note-section-content {
+      display: none;
+    }
+   }
   }
-  
-  .loader {
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  }
-  
-  .loader-content {
+}
+
+.modal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%;
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  &-content {
     position: relative;
-    // background-color: #fefefe;
+    background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
     padding: 15px;
-    width: 100%; /* Could be more or less, depending on screen size */
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
     top: 25%;
     display: flex;
     flex-direction: column;
     max-height: 200px;
-    height: 100%;
-    & i {
-      animation-duration: 4s;
-      animation-name: slidein;
-      animation-iteration-count: infinite;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-
-
-    }
   }
-
-  @keyframes slidein {
-    from {
-      margin-left: -30%;
-    }
-    to {
-      margin-left: 120%;
-    }
-  }
-
-  // Styles
-  .classic {
-    background-color: #e0e0e0;
-    & .page-buttons li {
-      background-color:white;  
-    }
-  }
-  .light-blue {
-    background-color: #a8c5de;
-    & .page-buttons li {
-      background-color:white;  
-    }
-  }
-  .light-pink {
-    background-color: #e8cde6;
-    & .page-buttons li {
-      background-color:white;  
-    }
-  }
-
-  .error {
-    color: red;
-    line-height: 2.4rem;
-    font-size: 1rem;
-    font-weight: 600;
-    & p {
-      margin-bottom: 0px;
-    }
-  }
-
-  .display-flex {
+  &-header {
     display: flex;
-    flex-direction: column;
-    &-grow {
+    border-bottom: 1px solid;
+    & h1 {
+      justify-content: center;
       display: flex;
-      flex-direction: column;
       flex-grow: 1;
+      color: gray;
+      font-size: 1.5rem;
+      line-height: 2.4rem;
+      padding-bottom: 5px;
     }
   }
-  .display-flex-row {
+  &-body {
     display: flex;
-    flex-direction: row;
-    &-grow {
+    flex-grow: 1;
+    justify-content: center;
+    padding: 10px 0px;
+    color: gray;
+    font-size: 1.5rem;
+    line-height: 2.4rem;
+
+  }
+  &-footer {
+    display: flex;
+    bottom: 15px;
+    width: 100%;
+    & ul {
       display: flex;
       flex-direction: row;
-      flex-grow: 1;
+      width: 100%;
     }
   }
-  .display-flex-center {
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-  }
+  
+}
 
-  $padding-sizes: (
-  5: 5
-);
+.loader {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
 
-@each $padding-key, $padding-value in $padding-sizes {
-  .padding-#{$padding-value} {
-    font-size: #{$padding-value}px;
+.loader-content {
+  position: relative;
+  // background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 15px;
+  width: 100%; /* Could be more or less, depending on screen size */
+  top: 25%;
+  display: flex;
+  flex-direction: column;
+  max-height: 200px;
+  height: 100%;
+  & i {
+    animation-duration: 4s;
+    animation-name: slidein;
+    animation-iteration-count: infinite;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+
   }
 }
 
+@keyframes slidein {
+  from {
+    margin-left: -30%;
+  }
+  to {
+    margin-left: 120%;
+  }
+}
+
+// Styles
+.classic {
+  background-color: #e0e0e0;
+  & .page-buttons li {
+    background-color:white;  
+  }
+}
+.light-blue {
+  background-color: #a8c5de;
+  & .page-buttons li {
+    background-color:white;  
+  }
+}
+.light-pink {
+  background-color: #e8cde6;
+  & .page-buttons li {
+    background-color:white;  
+  }
+}
+
+.error {
+  color: red;
+  line-height: 2.4rem;
+  font-size: 1rem;
+  font-weight: 600;
+  & p {
+    margin-bottom: 0px;
+  }
+}
+
+.display-flex {
+  display: flex;
+  flex-direction: column;
+  &-grow {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+}
+.display-flex-row {
+  display: flex;
+  flex-direction: row;
+  &-grow {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+  }
+}
+.display-flex-center {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+.flex-end {
+  align-items: flex-end;
+}
+
+$padding-sizes: (
+5: 5
+);
+
+@each $padding-key, $padding-value in $padding-sizes {
+.padding-#{$padding-value} {
+  font-size: #{$padding-value}px;
+}
+}
+
 @keyframes colorChanges {
-  0%   {background-color: red;}
-  20%  {background-color: yellow;}
-  40%  {background-color: blue;}
-  60% {background-color: magenta;}
-  80% {background-color: blue;}
-  90% {background-color: yellow;}
-  100% {background-color: red;}
+0%   {background-color: red;}
+20%  {background-color: yellow;}
+40%  {background-color: blue;}
+60% {background-color: magenta;}
+80% {background-color: blue;}
+90% {background-color: yellow;}
+100% {background-color: red;}
+}
+
+
+.plus-button {
+z-index: 1;
+top: 5px;
+right: 5px;
+position: absolute;
+display: flex;
+flex-direction: column;
+color: white;
+& ul {
+  display: flex;
+}
+&-accept {
+  margin-right: 5px;
+  & a {
+    & i {
+      padding: 10px;
+      border-radius: 50%;
+      background: inherit;
+      color: black;
+    }
+  }
+}
+}
+
+img {
+width: 24px;
+height: 24px;
 }
