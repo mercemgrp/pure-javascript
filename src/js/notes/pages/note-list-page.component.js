@@ -17,7 +17,7 @@ class NoteListPageComponent {
       })  
   }
   noteSectionTmpl(elem) {
-    return `<section onClick="ROUTER.currentPage.toggle(event, ${elem.id})" class="note-section note-section-hide-content ${elem.style ?  elem.style : 'classic'}" id="note_${elem.id}">
+    return `<section onClick="currentPageComp.toggle(event, ${elem.id})" class="note-section note-section-hide-content ${elem.style ?  'topic-' + elem.style : 'topic-classic'}" id="note_${elem.id}">
         <div class ="note-section-header">
           <div class="note-section-header--title">
             <a>${elem.title} </a>
@@ -30,7 +30,7 @@ class NoteListPageComponent {
                 </a>
               </li>
               <li>
-                <a href="javascript:void(0)" onclick="event.stopPropagation();ROUTER.currentPage.deleteNote(${elem.id})">
+                <a href="javascript:void(0)" onclick="event.stopPropagation();currentPageComp.deleteNote(${elem.id})">
                     <i class="im im-trash-can"></i>
                 </a>
               </li>

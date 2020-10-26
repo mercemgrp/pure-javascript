@@ -22,11 +22,11 @@ class NoteFormComponent {
       this.myNote = elem;
       this.titleComp.data.value = elem.title;
       this.contentComp.data.value = elem.content;
-      return `<div class="note-form ${elem.id ? 'note-form-edit' : 'note-form-create'} ${elem.style ? elem.style : 'classic'}">
+      return `<div class="note-form ${elem.id ? 'note-form-edit' : 'note-form-create'} ${elem.style ? elem.style : 'topic-classic'}">
         <section class="note-form-section display-flex-grow ">
         <div class="display-flex edit-buttons">
           <ul class="display-flex-row">
-            <li class="display-flex note-form-section--edit-color"><a class="note-form-section--edit-color--link">C</a></li>
+            <li class="display-flex note-form-section--edit-color"><a onClick="currentPageComp.form.toggleColors()" class="note-form-section--edit-color--link">C</a></li>
           </ul>
         </div>
         <form id="noteForm" name="noteForm" class="display-flex-grow">
@@ -48,17 +48,13 @@ class NoteFormComponent {
       ${this.colorsModalTmpl()}`;
     }
     load() {
+      document.querySelector('header').classList.add(this.myNote.style ? `topic-${this.myNote.style}` : 'topic-classic');
       const elem = document.querySelector('#note_content');
       const html = elem.innerHTML;
       document.querySelector('#note_content').innerHTML = '';
       Functions.resize();
       document.querySelector('#note_content').style.height = (elem.offsetHeight - 20) + 'px';
       document.querySelector('#note_content').innerHTML = html;
-      document.querySelector('.note-form-section--edit-color--link')
-        .addEventListener('click', e => {
-          e.preventDefault();
-          this.toggleColors();
-        });
       document.querySelectorAll('.edit-buttons-colors-option--elem').forEach(item => {
         item.addEventListener('click', e => {
           e.preventDefault();
@@ -83,9 +79,18 @@ class NoteFormComponent {
       }
     }
     selectColor(color) {
-      document.querySelector('.note-form').classList.remove(this.myNote.style ? this.myNote.style : 'classic');
-      this.myNote.style = color;
-      document.querySelector('.note-form').classList.add(this.myNote.style);
+      document.querySelector('.note-form').classList.remove(this.myNote.style ? `topic-${this.myNote.style}` : 'topic-classic');
+      document.querySelector('header').classList.forEach(
+        item => {
+          if (item.indexOf('topic-') > -1) {
+            document.querySelector('header').classList.remove(item);
+          }
+        }
+      )
+      this.myNote.style = color.replace('topic-', '');
+      
+      document.querySelector('header').classList.add(color);
+      document.querySelector('.note-form').classList.add(color);
       this.toggleColors();
     }
     onSubmit() {
@@ -109,7 +114,7 @@ class NoteFormComponent {
       this.contentComp.reset();
     }
     colorsModalTmpl() {
-      const colors = ['classic', 'light-blue', 'light-pink'];
+      const colors = ['topic-classic', 'topic-light-blue', 'topic-light-pink'];
       const resultListTmpl = colors.reduce((listTmpl, currentValue) => listTmpl +=
         `<a class="${currentValue} edit-buttons-colors-option--elem" color="${currentValue}">
         </a>`, ''

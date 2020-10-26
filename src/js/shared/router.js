@@ -6,8 +6,6 @@ const PATHS = {
 
 class Router  {   
   paths;
-  currentPage;
-  currentComponent;
 
   constructor(paths) {
     this.paths = paths;
@@ -39,8 +37,8 @@ class Router  {
     }
     if (component) {
       try {
-        this.currentPage = new component(params);
-          const templateRendered = this.currentPage.getTmpl();
+        currentPageComp = new component(params);
+          const templateRendered = currentPageComp.getTmpl();
         if (typeof templateRendered === 'object') {
           templateRendered.then(
             resp => this.renderAndLoadPage(resp, page)
@@ -50,22 +48,22 @@ class Router  {
         }
 
       } catch(e) {
-        this.currentPage = new ErrorPageComponent('Ha ocurrido un error abriendo la página solicitada');
+        currentPageComp = new ErrorPageComponent('Ha ocurrido un error abriendo la página solicitada');
         console.error('routes.js :: error :: ', e);
-        this.renderAndLoadPage(this.currentPage.getTmpl(), '/error');
+        this.renderAndLoadPage(currentPageComp.getTmpl(), '/error');
       }
     } else {
       console.error('No ha encontrado el componente en las rutas');
-      this.currentPage = new ErrorPageComponent('Página no encontrada');
-      this.renderAndLoadPage(this.currentPage.getTmpl(), '/error');
+      currentPageComp = new ErrorPageComponent('Página no encontrada');
+      this.renderAndLoadPage(currentPageComp.getTmpl(), '/error');
     }
   }
 
   renderAndLoadPage(template, page) {
     this.page = page;
     Functions.render(template, document.querySelector("#content"));
-    if (this.currentPage.load) {
-      this.currentPage.load();
+    if (currentPageComp.load) {
+      currentPageComp.load();
     }
     window.history.pushState({}, "", '/#' + page);    
   }

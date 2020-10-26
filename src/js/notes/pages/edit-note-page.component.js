@@ -4,7 +4,7 @@
   constructor(params) {
     this.params = params;
   }
-  getTmpl(){
+  getTmpl = function() {
     this.form = new NoteFormComponent();
     return NotesServices.getNote(this.params.id)
       .then(elem => {
@@ -22,7 +22,7 @@
         return false;
       });  
   }
-  load() {
+  load = function() {
     this.form.load();
     document.querySelector('.note-form-edit .note-form-section--button-accept a')
       .addEventListener('click', (event) => {
@@ -30,7 +30,7 @@
         this.editNote();
       });
   }
-  editNote() {
+  editNote = function() {
       var myNote = this.form.onSubmit();
       if (!myNote) {
         return;

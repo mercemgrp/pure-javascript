@@ -3,6 +3,7 @@
 var ROUTER;
 var modal;
 var loader;
+var currentPageComp;
 
 window.addEventListener('load', () => {
     App.load();

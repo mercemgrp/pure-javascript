@@ -13,6 +13,13 @@
     }
     static resetStyles() {
         document.querySelector('.header-menu--create').classList.remove('no-display');
+        document.querySelector('header').classList.forEach(
+            item => {
+              if (item.indexOf('topic-') > -1) {
+                document.querySelector('header').classList.remove(item);
+              }
+            }
+          )
     }
     static resize() {
         this.calculateHeight();
